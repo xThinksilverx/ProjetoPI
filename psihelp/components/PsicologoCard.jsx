@@ -28,7 +28,6 @@ export default function PsicologoCard({ psicologo, patientLat, patientLng }) {
     <Link href={`/psicologos/${psicologo._id}`} className={styles.cardLink}>
       <div className={styles.card}>
 
-        {/* Cabeçalho colorido com avatar circular */}
         <div className={styles.cardHeader}>
           <div className={styles.cardAvatarWrap}>
             <img
@@ -42,7 +41,6 @@ export default function PsicologoCard({ psicologo, patientLat, patientLng }) {
           )}
         </div>
 
-        {/* Conteúdo */}
         <div className={styles.cardContent}>
           <h3 className={styles.cardNome}>{psicologo.nome}</h3>
           <p className={styles.crp}>CRP: {psicologo.crp}</p>

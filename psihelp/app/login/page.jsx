@@ -38,7 +38,6 @@ export default function LoginPage() {
         if (!success) {
           setError('Email ou senha inválidos');
         }
-        // Redirecionamento tratado pelo AuthContext baseado no tipo do usuário
       } else {
         if (formData.senha !== formData.confirmarSenha) {
           setError('As senhas não coincidem');

@@ -82,7 +82,6 @@ export default function PsicologoDetalhe() {
         setTimeout(() => setAvaliacaoMsg(''), 3000);
       }
     } catch {
-      // falha de rede — mantém estado anterior
     } finally {
       setAvaliacaoLoading(false);
     }
@@ -128,20 +127,11 @@ export default function PsicologoDetalhe() {
     window.location.href = `mailto:${psicologo.emailProfissional}?subject=${assunto}&body=${corpo}`;
   };
 
-  const classeCelula = (dia, horario) => {
-    const disponivel = isDisponivel(psicologo.disponibilidade, dia, horario);
-    if (!disponivel) return styles.gradeIndisponivel;
-    if (isBloqueado(psicologo.bloqueados, dia, horario)) return styles.gradeBloqueado;
-    const selecionado = slotSelecionado?.dia === dia && slotSelecionado?.horario === horario;
-    return selecionado ? styles.gradeSelecionadoAtivo : styles.gradeSelecionado;
-  };
-
   return (
     <>
       <Header />
       <div className="container" style={{ maxWidth: '860px', paddingTop: '2rem', paddingBottom: '3rem' }}>
 
-        {/* Hero */}
         <div className={styles.detalheHero}>
           <div className={styles.detalheFotoWrap}>
             <img src={psicologo.foto || '/default-avatar.svg'} alt={psicologo.nome} className={styles.detalheFoto} />
@@ -163,7 +153,6 @@ export default function PsicologoDetalhe() {
 
             {psicologo.formacao && <p className={styles.detalheFormacao}>{psicologo.formacao}</p>}
 
-            {/* Botão de contato via WhatsApp */}
             <div style={{ marginTop: '1rem' }}>
               {slotSelecionado ? (
                 <div>
@@ -193,7 +182,6 @@ export default function PsicologoDetalhe() {
           </div>
         </div>
 
-        {/* Descrição */}
         {psicologo.descricao && (
           <div className={styles.detalheSecao}>
             <h2>Sobre</h2>
@@ -201,7 +189,6 @@ export default function PsicologoDetalhe() {
           </div>
         )}
 
-        {/* Abordagens */}
         {psicologo.abordagens?.length > 0 && (
           <div className={styles.detalheSecao}>
             <h2>Abordagens terapêuticas</h2>
@@ -211,7 +198,6 @@ export default function PsicologoDetalhe() {
           </div>
         )}
 
-        {/* Especializações */}
         {psicologo.especializacoes?.length > 0 && (
           <div className={styles.detalheSecao}>
             <h2>Especializações</h2>
@@ -223,11 +209,9 @@ export default function PsicologoDetalhe() {
           </div>
         )}
 
-        {/* Avaliação */}
         <div className={styles.detalheSecao}>
           <h2>Avaliação</h2>
 
-          {/* Média atual */}
           <div className={styles.avaliacaoMedia}>
             <span className={styles.avaliacaoNumero}>
               {psicologo.avaliacao > 0 ? psicologo.avaliacao.toFixed(1) : '—'}
@@ -244,7 +228,6 @@ export default function PsicologoDetalhe() {
             </span>
           </div>
 
-          {/* Input de avaliação — só pacientes */}
           {user?.tipo === 'paciente' && (
             <div className={styles.avaliarBox}>
               <p className={styles.avaliarLabel}>
@@ -283,7 +266,6 @@ export default function PsicologoDetalhe() {
           </p>
         </div>
 
-        {/* Grade de horários */}
         {temDisponibilidade && (
           <div className={styles.detalheSecao}>
             <h2>Horários disponíveis</h2>

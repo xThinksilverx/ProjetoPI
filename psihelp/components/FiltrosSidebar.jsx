@@ -172,7 +172,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
   return (
     <aside className={styles.sidebar}>
 
-      {/* Cabeçalho */}
       <div className={styles.filtrosCabecalho}>
         <div>
           <span className={styles.filtrosTituloPrincipal}>Filtros</span>
@@ -187,7 +186,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         )}
       </div>
 
-      {/* Modalidade */}
       <div className={styles.filtroGrupo}>
         <p className={styles.filtroRotulo}>Modalidade</p>
         <div className={styles.filtroModalidade}>
@@ -208,7 +206,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         </div>
       </div>
 
-      {/* Abordagem Terapêutica */}
       <div className={styles.filtroGrupo}>
         <p className={styles.filtroRotulo}>
           Abordagem Terapêutica
@@ -239,7 +236,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         </button>
       </div>
 
-      {/* Faixa de Preço */}
       <div className={styles.filtroGrupo}>
         <p className={styles.filtroRotulo}>Preço por sessão (R$)</p>
         <div className={styles.filtroPrecoInputs}>
@@ -269,7 +265,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         </div>
       </div>
 
-      {/* Localização por proximidade */}
       <div className={styles.filtroGrupo}>
         <p className={styles.filtroRotulo}>
           Localização
@@ -279,7 +274,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         </p>
 
         {filtros.lat && filtros.lng ? (
-          /* Localização definida — mostra label + raio */
           <div className={styles.filtroLocAtivo}>
             <div className={styles.filtroLocLabel}>
               <span>📍 {filtros.localizacaoLabel || 'Localização definida'}</span>
@@ -303,7 +297,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
             </div>
           </div>
         ) : (
-          /* Nenhuma localização — mostra opções */
           <div className={styles.filtroLocOpcoes}>
             <button
               type="button"
@@ -343,7 +336,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         {geoErro && <p className={styles.filtroLocErro}>{geoErro}</p>}
       </div>
 
-      {/* Disponibilidade */}
       <div className={styles.filtroGrupo}>
         <p className={styles.filtroRotulo}>Disponibilidade</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -367,7 +359,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         </div>
       </div>
 
-      {/* Avaliação mínima */}
       <div className={styles.filtroGrupo}>
         <p className={styles.filtroRotulo}>Avaliação mínima</p>
         <div className={styles.filtroEstrelas}>
@@ -394,7 +385,6 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         </div>
       </div>
 
-      {/* Botão Aplicar */}
       <button className={styles.btnAplicar} onClick={onFiltrar} style={{ width: '100%', padding: '0.65rem' }}>
         Aplicar filtros
         {ativos > 0 && ` (${ativos})`}

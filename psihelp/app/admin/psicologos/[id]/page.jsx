@@ -118,7 +118,6 @@ export default function AdminPsicologoDetalhe() {
       <Header />
       <div className="container" style={{ maxWidth: '860px', paddingTop: '2rem', paddingBottom: '3rem' }}>
 
-        {/* Breadcrumb */}
         <div style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: '#64748b' }}>
           <button onClick={() => router.push('/admin')} className={styles.btnVoltar}>
             ← Painel Admin
@@ -129,7 +128,6 @@ export default function AdminPsicologoDetalhe() {
 
         {feedback && <div className={styles.successMsg} style={{ marginBottom: '1rem' }}>{feedback}</div>}
 
-        {/* Hero */}
         <div className={styles.detalheHero}>
           <div className={styles.detalheFotoWrap}>
             <img
@@ -182,7 +180,6 @@ export default function AdminPsicologoDetalhe() {
             )}
             {psicologo.formacao && <p className={styles.detalheFormacao}>{psicologo.formacao}</p>}
 
-            {/* Ações de validação */}
             <div className={styles.adminAcoesValidacao}>
               <p className={styles.adminAcoesLabel}>Contato para validação</p>
               <div className={styles.adminAcoesBotoes}>
@@ -199,7 +196,6 @@ export default function AdminPsicologoDetalhe() {
               </div>
             </div>
 
-            {/* Botões de aprovação */}
             <div className={styles.adminAcoesAprovacao}>
               {!psicologo.validado ? (
                 <button className={styles.btnAprovar} onClick={() => alterarValidado(true)}>
@@ -217,7 +213,6 @@ export default function AdminPsicologoDetalhe() {
           </div>
         </div>
 
-        {/* Descrição */}
         {psicologo.descricao && (
           <div className={styles.detalheSecao}>
             <h2>Sobre</h2>
@@ -225,7 +220,6 @@ export default function AdminPsicologoDetalhe() {
           </div>
         )}
 
-        {/* Abordagens */}
         {psicologo.abordagens?.length > 0 && (
           <div className={styles.detalheSecao}>
             <h2>Abordagens terapêuticas</h2>
@@ -235,7 +229,6 @@ export default function AdminPsicologoDetalhe() {
           </div>
         )}
 
-        {/* Especializações */}
         {psicologo.especializacoes?.length > 0 && (
           <div className={styles.detalheSecao}>
             <h2>Especializações</h2>
@@ -247,7 +240,6 @@ export default function AdminPsicologoDetalhe() {
           </div>
         )}
 
-        {/* Grade de horários */}
         {temDisponibilidade && (
           <div className={styles.detalheSecao}>
             <h2>Horários cadastrados</h2>
@@ -289,7 +281,6 @@ export default function AdminPsicologoDetalhe() {
         )}
       </div>
 
-      {/* Modal de confirmação de exclusão */}
       {confirmDelete && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalBox}>

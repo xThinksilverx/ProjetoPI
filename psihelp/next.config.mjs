@@ -6,7 +6,6 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
-  // Evita o bug de race condition do mini-css-extract-plugin no HMR
   optimizeCss: false,
 };
 

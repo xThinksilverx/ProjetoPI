@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 
-// Decodifica o payload do JWT sem verificar assinatura
-// (verificação real acontece nas API routes com jsonwebtoken)
 function decodeJwt(token) {
   try {
     const base64Payload = token.split('.')[1];
@@ -27,7 +25,6 @@ export function middleware(request) {
   const payload = token ? decodeJwt(token) : null;
   const tokenValido = payload && !isTokenExpirado(payload);
 
-  // Rotas de admin — exige tipo === 'admin'
   if (adminRoutes.some(route => pathname.startsWith(route))) {
     if (!tokenValido) {
       const url = new URL('/login', request.url);
@@ -39,7 +36,6 @@ export function middleware(request) {
     }
   }
 
-  // Rotas protegidas — exige qualquer token válido
   if (protectedRoutes.some(route => pathname.startsWith(route))) {
     if (!tokenValido) {
       const url = new URL('/login', request.url);
@@ -50,7 +46,6 @@ export function middleware(request) {
     }
   }
 
-  // Usuário já logado não precisa ver /login
   if (authRoutes.includes(pathname) && tokenValido) {
     const dest = payload.tipo === 'admin' ? '/admin'
       : payload.tipo === 'psicologo' ? '/perfil'

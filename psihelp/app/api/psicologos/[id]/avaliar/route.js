@@ -11,7 +11,6 @@ async function getPayload() {
   return verifyToken(token);
 }
 
-// Retorna a nota do usuário logado para este psicólogo
 export async function GET(request, { params }) {
   const payload = await getPayload();
   if (!payload) {
@@ -22,7 +21,6 @@ export async function GET(request, { params }) {
   return NextResponse.json({ success: true, data: av ? av.nota : null });
 }
 
-// Salva ou atualiza a nota do usuário
 export async function POST(request, { params }) {
   const payload = await getPayload();
   if (!payload) {
@@ -39,7 +37,6 @@ export async function POST(request, { params }) {
 
   await connectDB();
 
-  // Impede o próprio psicólogo de se avaliar
   const psicologo = await Psicologo.findById(params.id);
   if (!psicologo) {
     return NextResponse.json({ success: false, error: 'Psicólogo não encontrado' }, { status: 404 });
@@ -48,19 +45,16 @@ export async function POST(request, { params }) {
     return NextResponse.json({ success: false, error: 'Você não pode avaliar seu próprio perfil' }, { status: 403 });
   }
 
-  // Upsert da avaliação (explicit $set para compatibilidade com Mongoose strict)
   await Avaliacao.findOneAndUpdate(
     { psicologoId: params.id, usuarioId: payload.id },
     { $set: { nota } },
     { upsert: true, setDefaultsOnInsert: true }
   );
 
-  // Recalcula média e total a partir de todas as avaliações
   const todas = await Avaliacao.find({ psicologoId: params.id });
   const total = todas.length;
   const media = total > 0 ? Math.round((todas.reduce((s, a) => s + a.nota, 0) / total) * 10) / 10 : 0;
 
-  // strict: false garante que totalAvaliacoes (campo novo) seja salvo mesmo com cache de schema
   await Psicologo.findByIdAndUpdate(
     params.id,
     { $set: { avaliacao: media, totalAvaliacoes: total } },

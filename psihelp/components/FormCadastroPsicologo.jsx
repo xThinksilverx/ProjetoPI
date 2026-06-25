@@ -28,7 +28,7 @@ export default function FormCadastroPsicologo({ user }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const [crpFormatoOk, setCrpFormatoOk] = useState(null); // null | true | false
+  const [crpFormatoOk, setCrpFormatoOk] = useState(null);
 
   const [form, setForm] = useState({
     crp: '',
@@ -87,7 +87,6 @@ export default function FormCadastroPsicologo({ user }) {
     return d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
   };
 
-  // Upload de foto
   const handleFoto = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -107,7 +106,6 @@ export default function FormCadastroPsicologo({ user }) {
     reader.readAsDataURL(file);
   };
 
-  // Modalidade — checkboxes
   const toggleModalidade = (mod) => {
     setForm(prev => ({
       ...prev,
@@ -118,7 +116,6 @@ export default function FormCadastroPsicologo({ user }) {
     setErrors(prev => ({ ...prev, modalidades: '' }));
   };
 
-  // Abordagens
   const toggleAbordagem = (ab) => {
     setForm(prev => ({
       ...prev,
@@ -129,7 +126,6 @@ export default function FormCadastroPsicologo({ user }) {
     setErrors(prev => ({ ...prev, abordagens: '' }));
   };
 
-  // Grade de disponibilidade
   const isSlotSelecionado = (dia, horario) => {
     const d = form.disponibilidade.find(d => d.dia === dia);
     return d ? d.horarios.includes(horario) : false;
@@ -172,13 +168,11 @@ export default function FormCadastroPsicologo({ user }) {
     e.preventDefault();
     if (!validar()) return;
 
-    // Converte ['online','presencial'] → 'ambos', ou só o valor único
     const modalidade =
       form.modalidades.length === 2 ? 'ambos' : form.modalidades[0];
 
     setLoading(true);
     try {
-      // Tenta geocodificar a localização para buscas por proximidade
       let loc;
       if (form.cidade && form.estado) {
         try {
@@ -190,7 +184,7 @@ export default function FormCadastroPsicologo({ user }) {
           if (geoData.length > 0) {
             loc = { type: 'Point', coordinates: [Number(geoData[0].lon), Number(geoData[0].lat)] };
           }
-        } catch { /* sem coordenadas — não bloqueia o cadastro */ }
+        } catch {}
       }
 
       const res = await fetch('/api/psicologos', {
@@ -253,7 +247,6 @@ export default function FormCadastroPsicologo({ user }) {
 
       <form onSubmit={handleSubmit} className={styles.cadastroForm}>
 
-        {/* CRP */}
         <div className={styles.formGroup}>
           <label>CRP válido * (formato NN/XXXXX)</label>
           <div style={{ position: 'relative' }}>
@@ -287,7 +280,6 @@ export default function FormCadastroPsicologo({ user }) {
           {errors.crp && <span className={styles.error}>{errors.crp}</span>}
         </div>
 
-        {/* Foto */}
         <div className={styles.formGroup}>
           <label>Foto profissional * (JPEG ou PNG, máx. 1,5 MB)</label>
           <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFoto} />
@@ -298,7 +290,6 @@ export default function FormCadastroPsicologo({ user }) {
           )}
         </div>
 
-        {/* Telefone e e-mail profissional */}
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label>Telefone / WhatsApp de contato</label>
@@ -310,21 +301,18 @@ export default function FormCadastroPsicologo({ user }) {
           </div>
         </div>
 
-        {/* Formação */}
         <div className={styles.formGroup}>
           <label>Formação acadêmica *</label>
           <input type="text" name="formacao" value={form.formacao} onChange={handleChange} placeholder="Ex: Psicologia — USP (2018)" />
           {errors.formacao && <span className={styles.error}>{errors.formacao}</span>}
         </div>
 
-        {/* Especializações */}
         <div className={styles.formGroup}>
           <label>Especializações / áreas de atuação</label>
           <input type="text" name="especializacoes" value={form.especializacoes} onChange={handleChange}
             placeholder="Ex: Ansiedade, Depressão, TDAH (separadas por vírgula)" />
         </div>
 
-        {/* Abordagens */}
         <div className={styles.formGroup}>
           <label>Abordagem terapêutica *</label>
           <div className={styles.checkboxGrid}>
@@ -338,7 +326,6 @@ export default function FormCadastroPsicologo({ user }) {
           {errors.abordagens && <span className={styles.error}>{errors.abordagens}</span>}
         </div>
 
-        {/* Modalidade — checkboxes */}
         <div className={styles.formGroup}>
           <label>Modalidade de atendimento *</label>
           <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.25rem' }}>
@@ -352,7 +339,6 @@ export default function FormCadastroPsicologo({ user }) {
           {errors.modalidades && <span className={styles.error}>{errors.modalidades}</span>}
         </div>
 
-        {/* Localização */}
         <div className={styles.formGroup}>
           <label>CEP {cepLoading && <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Buscando...</span>}</label>
           <input
@@ -390,14 +376,12 @@ export default function FormCadastroPsicologo({ user }) {
           </div>
         )}
 
-        {/* Preço */}
         <div className={styles.formGroup}>
           <label>Valor por sessão (R$) *</label>
           <input type="number" name="preco" value={form.preco} onChange={handleChange} min="1" step="1" placeholder="150" />
           {errors.preco && <span className={styles.error}>{errors.preco}</span>}
         </div>
 
-        {/* Grade de disponibilidade */}
         <div className={styles.formGroup}>
           <label>Disponibilidade de horários</label>
           <p style={{ fontSize: '0.82rem', color: '#64748b', marginBottom: '0.5rem' }}>
@@ -434,7 +418,6 @@ export default function FormCadastroPsicologo({ user }) {
           </div>
         </div>
 
-        {/* Descrição */}
         <div className={styles.formGroup}>
           <label>Descrição profissional *</label>
           <textarea name="descricao" rows={4} value={form.descricao} onChange={handleChange}
@@ -442,7 +425,6 @@ export default function FormCadastroPsicologo({ user }) {
           {errors.descricao && <span className={styles.error}>{errors.descricao}</span>}
         </div>
 
-        {/* Termos */}
         <div className={styles.formGroup}>
           <label className={styles.termos}>
             <input type="checkbox" required />

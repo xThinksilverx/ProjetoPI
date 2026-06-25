@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
 
-// A API pública do CFP (cn-api.cfp.org.br) não oferece busca por número de CRP
-// sem CPF ou token de reCAPTCHA. Este endpoint valida apenas o formato do CRP
-// e gera o link direto para verificação manual no site do CFP.
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const crp = searchParams.get('crp');

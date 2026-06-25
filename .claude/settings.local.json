@@ -13,7 +13,8 @@
       "Bash(Write-Output \"ok\")",
       "Bash(sort -t'.' -k2)",
       "Bash(uniq -d -f1)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(grep *)"
     ]
   }
 }

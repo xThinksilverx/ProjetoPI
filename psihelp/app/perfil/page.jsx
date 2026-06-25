@@ -162,7 +162,6 @@ export default function PerfilPage() {
       <div className={styles.perfilContainer} style={{ maxWidth: '680px' }}>
         {feedback && <div className={styles.successMsg}>{feedback}</div>}
 
-        {/* Dados Pessoais */}
         <div className={styles.perfilCard} style={{ marginBottom: '1.5rem' }}>
           <div className={styles.perfilHeader}>
             <h2>Dados Pessoais</h2>
@@ -211,7 +210,6 @@ export default function PerfilPage() {
           )}
         </div>
 
-        {/* Perfil Profissional — só para psicólogos */}
         {user.tipo === 'psicologo' && (
           <>
             <div className={styles.perfilCard} style={{ marginBottom: '1.5rem' }}>
@@ -304,7 +302,6 @@ export default function PerfilPage() {
               )}
             </div>
 
-            {/* Gerenciar horários bloqueados */}
             {!loadingPsi && temDisponibilidade && (
               <div className={styles.perfilCard}>
                 <div className={styles.perfilHeader}>

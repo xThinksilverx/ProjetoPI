@@ -70,7 +70,6 @@ const psicologoSchema = new mongoose.Schema({
     },
     horarios: [String]
   }],
-  // Horários bloqueados (já ocupados pelo psicólogo)
   bloqueados: [{
     dia: {
       type: String,
@@ -88,12 +87,10 @@ const psicologoSchema = new mongoose.Schema({
   }
 });
 
-// Índices para buscas
 psicologoSchema.index({ validado: 1, preco: 1, avaliacao: -1 });
 psicologoSchema.index({ 'localizacao.cidade': 1, 'localizacao.estado': 1 });
 psicologoSchema.index({ abordagens: 1 });
 psicologoSchema.index({ nome: 'text', descricao: 'text', especializacoes: 'text' });
-// Índice geoespacial para busca por proximidade (sparse = ignora docs sem loc)
 psicologoSchema.index({ 'localizacao.loc': '2dsphere' }, { sparse: true });
 
 export default mongoose.models.Psicologo || mongoose.model('Psicologo', psicologoSchema);

@@ -8,15 +8,12 @@ export async function POST(request) {
     await connectDB();
 
     const {
-      // Dados da conta
       nome, email, senha,
-      // Dados profissionais
       crp, foto, telefone, formacao, descricao,
       especializacoes, abordagens, modalidade, preco,
       localizacao, disponibilidade
     } = await request.json();
 
-    // Validações básicas
     if (!nome || !email || !senha || !crp) {
       return NextResponse.json(
         { success: false, error: 'Nome, email, senha e CRP são obrigatórios' },
@@ -31,7 +28,6 @@ export async function POST(request) {
       );
     }
 
-    // Verificar email duplicado
     const emailExistente = await Usuario.findOne({ email: email.toLowerCase() });
     if (emailExistente) {
       return NextResponse.json(
@@ -40,7 +36,6 @@ export async function POST(request) {
       );
     }
 
-    // Verificar CRP duplicado
     const crpExistente = await Psicologo.findOne({ crp: crp.toUpperCase() });
     if (crpExistente) {
       return NextResponse.json(
@@ -49,11 +44,9 @@ export async function POST(request) {
       );
     }
 
-    // Criar conta de usuário (pre-save hook faz o hash da senha)
     const usuario = new Usuario({ nome, email, senha, tipo: 'psicologo' });
     await usuario.save();
 
-    // Criar perfil profissional
     const psicologo = new Psicologo({
       nome,
       email,

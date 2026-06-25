@@ -16,7 +16,6 @@ export default function CadastroPage() {
     if (!loading && !user) {
       router.push('/login?callbackUrl=/cadastro');
     }
-    // Admin não tem acesso ao cadastro de psicólogo
     if (!loading && user?.tipo === 'admin') {
       router.push('/admin');
     }

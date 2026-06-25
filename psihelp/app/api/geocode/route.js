@@ -9,10 +9,8 @@ export async function GET(request) {
   try {
     let url;
     if (lat && lng) {
-      // Geocodificação reversa: coordenadas → endereço
       url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=pt-BR`;
     } else if (q) {
-      // Geocodificação direta: texto → coordenadas
       url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=br&accept-language=pt-BR`;
     } else {
       return NextResponse.json([]);

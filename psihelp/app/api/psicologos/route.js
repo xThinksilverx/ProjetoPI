@@ -5,7 +5,6 @@ import Usuario from '@/lib/models/Usuario';
 import { verifyToken } from '@/lib/auth';
 import { cookies } from 'next/headers';
 
-// GET - Buscar psicólogos com filtros
 export async function GET(request) {
   try {
     await connectDB();
@@ -27,10 +26,8 @@ export async function GET(request) {
     const pagina = parseInt(searchParams.get('pagina') || '1');
     const limite = parseInt(searchParams.get('limite') || '12');
     
-    // Todas as condições acumuladas em $and para evitar conflitos entre $or aninhados
     const conditions = [{ validado: true }];
 
-    // Busca por texto — cada palavra deve bater em pelo menos um dos campos
     if (buscaTexto && buscaTexto.trim()) {
       const termos = buscaTexto.trim().split(/\s+/).filter(Boolean);
       const camposBusca = (re) => [
@@ -48,17 +45,14 @@ export async function GET(request) {
       });
     }
 
-    // Filtro por abordagens (sidebar)
     if (abordagens && abordagens.length > 0) {
       conditions.push({ abordagens: { $in: abordagens } });
     }
 
-    // Filtro por modalidade — 'ambos' aparece em qualquer filtro
     if (modalidade && modalidade !== 'todos') {
       conditions.push({ $or: [{ modalidade }, { modalidade: 'ambos' }] });
     }
 
-    // Filtro por preço
     if (precoMin || precoMax) {
       const precoFiltro = {};
       if (precoMin) precoFiltro.$gte = Number(precoMin);
@@ -66,23 +60,19 @@ export async function GET(request) {
       conditions.push({ preco: precoFiltro });
     }
 
-    // Filtro por localização
     if (cidade) conditions.push({ 'localizacao.cidade': new RegExp(cidade, 'i') });
     if (estado) conditions.push({ 'localizacao.estado': new RegExp(estado, 'i') });
 
-    // Filtro por horário
     if (horarioDia && horarioHora) {
       conditions.push({
         disponibilidade: { $elemMatch: { dia: horarioDia, horarios: horarioHora } }
       });
     }
 
-    // Filtro por avaliação mínima
     if (avaliacaoMin) {
       conditions.push({ avaliacao: { $gte: Number(avaliacaoMin) } });
     }
 
-    // Filtro geoespacial por proximidade ($near exige índice 2dsphere)
     const usarProximidade = lat && lng;
     if (usarProximidade) {
       conditions.push({
@@ -98,7 +88,6 @@ export async function GET(request) {
     const filtro = conditions.length === 1 ? conditions[0] : { $and: conditions };
 
     const skip = (pagina - 1) * limite;
-    // $near já ordena por distância — sort explícito não pode ser aplicado junto
     const query = Psicologo.find(filtro).skip(skip).limit(limite);
     if (!usarProximidade) query.sort({ avaliacao: -1, totalAvaliacoes: -1, preco: 1 });
     const psicologos = await query;
@@ -124,7 +113,6 @@ export async function GET(request) {
   }
 }
 
-// POST - Cadastrar novo psicólogo
 export async function POST(request) {
   try {
     const cookieStore = cookies();
@@ -150,7 +138,6 @@ export async function POST(request) {
     const data = await request.json();
     const { crp, email } = data;
     
-    // Verificar duplicatas
     const existente = await Psicologo.findOne({ $or: [{ crp }, { email }] });
     if (existente) {
       return NextResponse.json(
@@ -167,7 +154,6 @@ export async function POST(request) {
 
     await psicologo.save();
 
-    // Atualiza o tipo do usuário para 'psicologo'
     await Usuario.findByIdAndUpdate(payload.id, { tipo: 'psicologo' });
 
     return NextResponse.json({

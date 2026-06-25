@@ -23,7 +23,6 @@ const avaliacaoSchema = new mongoose.Schema({
   }
 });
 
-// Garante uma avaliação por usuário por psicólogo
 avaliacaoSchema.index({ psicologoId: 1, usuarioId: 1 }, { unique: true });
 
 export default mongoose.models.Avaliacao || mongoose.model('Avaliacao', avaliacaoSchema);

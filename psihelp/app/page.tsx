@@ -30,7 +30,6 @@ export default function HomePage() {
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      // localizacaoLabel é só para display — não vai para a API
       const SKIP = ['localizacaoLabel'];
       Object.keys(filtrosAlvo).forEach((key) => {
         if (SKIP.includes(key)) return;

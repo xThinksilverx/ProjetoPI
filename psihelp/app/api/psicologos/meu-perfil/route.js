@@ -49,13 +49,10 @@ export async function PUT(request) {
     await connectDB();
     const data = await request.json();
 
-    // Campos que o próprio psicólogo não pode alterar
     delete data.validado;
     delete data.usuarioId;
     delete data.crp;
 
-    // strict: false garante que campos novos no schema (como bloqueados)
-    // não sejam ignorados pelo cache do modelo Mongoose em dev
     const psicologo = await Psicologo.findOneAndUpdate(
       { usuarioId: payload.id },
       { $set: data },
