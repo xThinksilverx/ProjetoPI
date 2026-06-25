@@ -28,6 +28,8 @@ export default function FormCadastroPsicologo({ user }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
+  const [crpFormatoOk, setCrpFormatoOk] = useState(null); // null | true | false
+
   const [form, setForm] = useState({
     crp: '',
     foto: '',
@@ -38,13 +40,16 @@ export default function FormCadastroPsicologo({ user }) {
     especializacoes: '',
     descricao: '',
     abordagens: [],
-    modalidades: [],   // array: ['online'], ['presencial'] ou ['online','presencial']
+    modalidades: [],
     preco: '',
+    cep: '',
     cidade: '',
     estado: '',
     endereco: '',
     disponibilidade: [],
   });
+
+  const [cepLoading, setCepLoading] = useState(false);
 
   const set = (name, value) => {
     setForm(prev => ({ ...prev, [name]: value }));
@@ -52,6 +57,35 @@ export default function FormCadastroPsicologo({ user }) {
   };
 
   const handleChange = (e) => set(e.target.name, e.target.value);
+
+  const validarFormatoCrp = (crp) => {
+    setCrpFormatoOk(/^\d{2}\/\d{5}$/.test(crp));
+  };
+
+  const handleCepBlur = async () => {
+    const cep = form.cep.replace(/\D/g, '');
+    if (cep.length !== 8) return;
+    setCepLoading(true);
+    try {
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await res.json();
+      if (!data.erro) {
+        set('cidade', data.localidade || '');
+        set('estado', data.uf || '');
+      } else {
+        setErrors(prev => ({ ...prev, cep: 'CEP não encontrado.' }));
+      }
+    } catch {
+      setErrors(prev => ({ ...prev, cep: 'Erro ao buscar CEP.' }));
+    } finally {
+      setCepLoading(false);
+    }
+  };
+
+  const formatarCep = (v) => {
+    const d = v.replace(/\D/g, '').slice(0, 8);
+    return d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
+  };
 
   // Upload de foto
   const handleFoto = (e) => {
@@ -144,6 +178,21 @@ export default function FormCadastroPsicologo({ user }) {
 
     setLoading(true);
     try {
+      // Tenta geocodificar a localização para buscas por proximidade
+      let loc;
+      if (form.cidade && form.estado) {
+        try {
+          const query = form.cep
+            ? `${form.cep}, Brasil`
+            : `${form.cidade}, ${form.estado}, Brasil`;
+          const geoRes = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`);
+          const geoData = await geoRes.json();
+          if (geoData.length > 0) {
+            loc = { type: 'Point', coordinates: [Number(geoData[0].lon), Number(geoData[0].lat)] };
+          }
+        } catch { /* sem coordenadas — não bloqueia o cadastro */ }
+      }
+
       const res = await fetch('/api/psicologos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -163,7 +212,9 @@ export default function FormCadastroPsicologo({ user }) {
           localizacao: {
             cidade: form.cidade,
             estado: form.estado.toUpperCase(),
+            cep: form.cep || undefined,
             endereco: modalidade === 'online' ? 'Atendimento online' : form.endereco,
+            ...(loc ? { loc } : {}),
           },
           disponibilidade: form.disponibilidade,
         })
@@ -205,7 +256,34 @@ export default function FormCadastroPsicologo({ user }) {
         {/* CRP */}
         <div className={styles.formGroup}>
           <label>CRP válido * (formato NN/XXXXX)</label>
-          <input type="text" name="crp" value={form.crp} onChange={handleChange} placeholder="Ex: 04/51234" />
+          <div style={{ position: 'relative' }}>
+            <input
+              type="text"
+              name="crp"
+              value={form.crp}
+              onChange={(e) => { handleChange(e); setCrpFormatoOk(null); }}
+              onBlur={() => validarFormatoCrp(form.crp)}
+              placeholder="Ex: 04/51234"
+              style={{ paddingRight: '2rem' }}
+            />
+            {crpFormatoOk === true && (
+              <span style={{ position: 'absolute', right: '0.6rem', top: '50%', transform: 'translateY(-50%)', color: '#16a34a' }}>✓</span>
+            )}
+            {crpFormatoOk === false && (
+              <span style={{ position: 'absolute', right: '0.6rem', top: '50%', transform: 'translateY(-50%)', color: '#dc2626' }}>✗</span>
+            )}
+          </div>
+
+          {crpFormatoOk === true && (
+            <div className={styles.crpAviso}>
+              Formato válido. O administrador verificará seu CRP no{' '}
+              <a href="https://cadastro.cfp.org.br/" target="_blank" rel="noopener noreferrer" className={styles.linkCfp}>
+                site do CFP
+              </a>{' '}
+              durante a validação do cadastro.
+            </div>
+          )}
+
           {errors.crp && <span className={styles.error}>{errors.crp}</span>}
         </div>
 
@@ -275,6 +353,23 @@ export default function FormCadastroPsicologo({ user }) {
         </div>
 
         {/* Localização */}
+        <div className={styles.formGroup}>
+          <label>CEP {cepLoading && <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Buscando...</span>}</label>
+          <input
+            type="text"
+            name="cep"
+            value={form.cep}
+            onChange={(e) => set('cep', formatarCep(e.target.value))}
+            onBlur={handleCepBlur}
+            placeholder="00000-000"
+            maxLength={9}
+            style={{ maxWidth: '160px' }}
+          />
+          {errors.cep && <span className={styles.error}>{errors.cep}</span>}
+          <span style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '0.2rem', display: 'block' }}>
+            Ao preencher o CEP, cidade e estado são preenchidos automaticamente.
+          </span>
+        </div>
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label>Cidade *</label>

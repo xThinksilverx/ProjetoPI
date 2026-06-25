@@ -200,8 +200,329 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-height: 200px;
-  overflow-y: auto;
+}
+
+/* New sidebar styles */
+.filtrosCabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.filtrosTituloPrincipal {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.filtrosBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2a5298;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.filtrosLimparTudo {
+  background: none;
+  border: none;
+  color: #2a5298;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.filtrosLimparTudo:hover {
+  color: #1e3c72;
+}
+
+.filtroRotulo {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.6rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filtroContador {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #2a5298;
+  background: #eff6ff;
+  border-radius: 10px;
+  padding: 1px 7px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.filtroModalidade {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.filtroModalidadeBtn {
+  flex: 1;
+  min-width: 60px;
+  padding: 0.4rem 0.3rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.filtroModalidadeBtn:hover {
+  border-color: #2a5298;
+  color: #2a5298;
+  background: #eff6ff;
+}
+
+.filtroModalidadeBtnAtivo {
+  border-color: #2a5298;
+  background: #2a5298;
+  color: white;
+}
+
+.filtroModalidadeBtnAtivo:hover {
+  background: #1e3c72;
+  border-color: #1e3c72;
+  color: white;
+}
+
+.filtrosVerMais {
+  background: none;
+  border: none;
+  color: #2a5298;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.35rem 0;
+  text-align: left;
+  margin-top: 0.25rem;
+}
+
+.filtrosVerMais:hover {
+  text-decoration: underline;
+}
+
+.filtroPrecoInputs {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.filtroPrecoItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.filtroPrecoLabel {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.filtroPrecoInput {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #1e293b;
+  background: white;
+  transition: border-color 0.15s;
+}
+
+.filtroPrecoInput:focus {
+  outline: none;
+  border-color: #2a5298;
+}
+
+.filtroPrecoSep {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  padding-bottom: 0.4rem;
+}
+
+.filtroEstrelas {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.filtroEstrelaBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.filtroEstrelaLabel {
+  font-size: 0.78rem;
+  color: #2a5298;
+  font-weight: 600;
+  margin-left: 0.35rem;
+  white-space: nowrap;
+}
+
+/* Localização por proximidade */
+.filtroLocOpcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.filtroLocGeoBtn {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 8px;
+  color: #1d4ed8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.filtroLocGeoBtn:hover:not(:disabled) {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.filtroLocGeoBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.filtroLocOu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.filtroLocOu::before,
+.filtroLocOu::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.filtroLocCepRow {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.filtroLocCepInput {
+  flex: 1;
+  padding: 0.4rem 0.5rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: border-color 0.15s;
+}
+
+.filtroLocCepInput:focus {
+  outline: none;
+  border-color: #2a5298;
+}
+
+.filtroLocCepBtn {
+  padding: 0.4rem 0.65rem;
+  background: #2a5298;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.filtroLocCepBtn:hover:not(:disabled) {
+  background: #1e3c72;
+}
+
+.filtroLocCepBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.filtroLocAtivo {
+  background: #f0fdf4;
+  border: 1.5px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+}
+
+.filtroLocLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #166534;
+}
+
+.filtroLocClear {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.filtroLocClear:hover {
+  color: #ef4444;
+}
+
+.filtroLocErro {
+  font-size: 0.78rem;
+  color: #dc2626;
+  margin: 0.4rem 0 0;
+}
+
+/* Distância nos cards */
+.cardDistancia {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .checkboxLabel {
@@ -799,6 +1120,37 @@
 
 .linkCfp:hover {
   color: #1e3c72;
+}
+
+/* Feedback de validação do CRP */
+.crpValido {
+  margin-top: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: #dcfce7;
+  border-left: 3px solid #16a34a;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: #166534;
+}
+
+.crpInvalido {
+  margin-top: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: #fee2e2;
+  border-left: 3px solid #dc2626;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: #991b1b;
+}
+
+.crpAviso {
+  margin-top: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: #fef9c3;
+  border-left: 3px solid #ca8a04;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: #854d0e;
 }
 
 .btnSubmit {

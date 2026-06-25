@@ -56,7 +56,12 @@ const psicologoSchema = new mongoose.Schema({
   localizacao: {
     cidade: String,
     estado: String,
-    endereco: String
+    cep: String,
+    endereco: String,
+    loc: {
+      type: { type: String, enum: ['Point'] },
+      coordinates: [Number],
+    },
   },
   disponibilidade: [{
     dia: {
@@ -88,5 +93,7 @@ psicologoSchema.index({ validado: 1, preco: 1, avaliacao: -1 });
 psicologoSchema.index({ 'localizacao.cidade': 1, 'localizacao.estado': 1 });
 psicologoSchema.index({ abordagens: 1 });
 psicologoSchema.index({ nome: 'text', descricao: 'text', especializacoes: 'text' });
+// Índice geoespacial para busca por proximidade (sparse = ignora docs sem loc)
+psicologoSchema.index({ 'localizacao.loc': '2dsphere' }, { sparse: true });
 
 export default mongoose.models.Psicologo || mongoose.model('Psicologo', psicologoSchema);

@@ -144,7 +144,18 @@ export default function AdminPsicologoDetalhe() {
 
           <div className={styles.detalheInfo}>
             <h1 className={styles.detalheNome}>{psicologo.nome}</h1>
-            <p className={styles.detalheCrp}>CRP: {psicologo.crp}</p>
+            <p className={styles.detalheCrp}>
+              CRP: {psicologo.crp}{' '}
+              <a
+                href={`https://cadastro.cfp.org.br/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.linkCfp}
+                title="Verificar CRP no site do CFP"
+              >
+                Verificar no CFP ↗
+              </a>
+            </p>
 
             <div className={styles.detalheMeta}>
               <span>💰 R$ {psicologo.preco}/sessão</span>

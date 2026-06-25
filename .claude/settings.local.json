@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:cadastro.cfp.org.br)",
+      "Bash(curl -s -I \"https://cadastro.cfp.org.br/\")",
+      "Bash(curl -s \"https://cadastro.cfp.org.br/\")",
+      "Bash(curl -s \"https://cn-api.cfp.org.br/psi/buscarComCodigo?profissional=04%2F51234\")",
+      "Bash(curl -s \"https://cn-api.cfp.org.br/psi/buscarComCodigo?profissional=04%2F12345\")",
+      "Bash(curl -s \"https://cn-api.cfp.org.br/psi/busca?tipo=PF&cpf=12345678900\")",
+      "Bash(curl *)",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\otavi\\\\Documents\\\\projetopi-main\\\\projetopi-main\\\\psihelp\\\\app\\\\api\\\\geocode\")",
+      "Bash(Out-Null)",
+      "Bash(Write-Output \"ok\")",
+      "Bash(sort -t'.' -k2)",
+      "Bash(uniq -d -f1)",
+      "Bash(node *)"
+    ]
+  }
+}

@@ -20,56 +20,88 @@ export async function GET(request) {
     const estado = searchParams.get('estado');
     const horarioDia = searchParams.get('horarioDia');
     const horarioHora = searchParams.get('horarioHora');
+    const avaliacaoMin = searchParams.get('avaliacaoMin');
+    const lat    = searchParams.get('lat');
+    const lng    = searchParams.get('lng');
+    const raioKm = searchParams.get('raioKm') || '25';
     const pagina = parseInt(searchParams.get('pagina') || '1');
     const limite = parseInt(searchParams.get('limite') || '12');
     
-    const filtro = { validado: true };
-    
-    // Busca por texto
-    if (buscaTexto) {
-      filtro.$text = { $search: buscaTexto };
+    // Todas as condições acumuladas em $and para evitar conflitos entre $or aninhados
+    const conditions = [{ validado: true }];
+
+    // Busca por texto — cada palavra deve bater em pelo menos um dos campos
+    if (buscaTexto && buscaTexto.trim()) {
+      const termos = buscaTexto.trim().split(/\s+/).filter(Boolean);
+      const camposBusca = (re) => [
+        { nome: re },
+        { crp: re },
+        { descricao: re },
+        { formacao: re },
+        { abordagens: re },
+        { especializacoes: re },
+        { 'localizacao.cidade': re },
+        { 'localizacao.estado': re },
+      ];
+      termos.forEach(termo => {
+        conditions.push({ $or: camposBusca(new RegExp(termo, 'i')) });
+      });
     }
-    
-    // Filtro por abordagens
+
+    // Filtro por abordagens (sidebar)
     if (abordagens && abordagens.length > 0) {
-      filtro.abordagens = { $in: abordagens };
+      conditions.push({ abordagens: { $in: abordagens } });
     }
-    
-    // Filtro por modalidade ('ambos' aparece em qualquer filtro)
+
+    // Filtro por modalidade — 'ambos' aparece em qualquer filtro
     if (modalidade && modalidade !== 'todos') {
-      filtro.$or = [{ modalidade }, { modalidade: 'ambos' }];
+      conditions.push({ $or: [{ modalidade }, { modalidade: 'ambos' }] });
     }
-    
+
     // Filtro por preço
     if (precoMin || precoMax) {
-      filtro.preco = {};
-      if (precoMin) filtro.preco.$gte = Number(precoMin);
-      if (precoMax) filtro.preco.$lte = Number(precoMax);
+      const precoFiltro = {};
+      if (precoMin) precoFiltro.$gte = Number(precoMin);
+      if (precoMax) precoFiltro.$lte = Number(precoMax);
+      conditions.push({ preco: precoFiltro });
     }
-    
+
     // Filtro por localização
-    if (cidade) {
-      filtro['localizacao.cidade'] = new RegExp(cidade, 'i');
-    }
-    if (estado) {
-      filtro['localizacao.estado'] = new RegExp(estado, 'i');
-    }
-    
+    if (cidade) conditions.push({ 'localizacao.cidade': new RegExp(cidade, 'i') });
+    if (estado) conditions.push({ 'localizacao.estado': new RegExp(estado, 'i') });
+
     // Filtro por horário
     if (horarioDia && horarioHora) {
-      filtro.disponibilidade = {
-        $elemMatch: {
-          dia: horarioDia,
-          horarios: horarioHora
-        }
-      };
+      conditions.push({
+        disponibilidade: { $elemMatch: { dia: horarioDia, horarios: horarioHora } }
+      });
     }
-    
+
+    // Filtro por avaliação mínima
+    if (avaliacaoMin) {
+      conditions.push({ avaliacao: { $gte: Number(avaliacaoMin) } });
+    }
+
+    // Filtro geoespacial por proximidade ($near exige índice 2dsphere)
+    const usarProximidade = lat && lng;
+    if (usarProximidade) {
+      conditions.push({
+        'localizacao.loc': {
+          $near: {
+            $geometry: { type: 'Point', coordinates: [Number(lng), Number(lat)] },
+            $maxDistance: Number(raioKm) * 1000,
+          },
+        },
+      });
+    }
+
+    const filtro = conditions.length === 1 ? conditions[0] : { $and: conditions };
+
     const skip = (pagina - 1) * limite;
-    const psicologos = await Psicologo.find(filtro)
-      .sort({ avaliacao: -1, preco: 1 })
-      .skip(skip)
-      .limit(limite);
+    // $near já ordena por distância — sort explícito não pode ser aplicado junto
+    const query = Psicologo.find(filtro).skip(skip).limit(limite);
+    if (!usarProximidade) query.sort({ avaliacao: -1, totalAvaliacoes: -1, preco: 1 });
+    const psicologos = await query;
     
     const total = await Psicologo.countDocuments(filtro);
     

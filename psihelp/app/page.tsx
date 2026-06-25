@@ -17,34 +17,37 @@ export default function HomePage() {
     modalidade: 'todos',
     precoMin: '',
     precoMax: '',
-    cidade: '',
-    estado: '',
+    lat: '',
+    lng: '',
+    raioKm: '25',
+    localizacaoLabel: '',
     horarioDia: '',
-    horarioHora: ''
+    horarioHora: '',
+    avaliacaoMin: '',
   });
 
-  const carregarPsicologos = async () => {
+  const carregarPsicologos = async (filtrosAlvo = filtros) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      Object.keys(filtros).forEach(key => {
-        if (filtros[key] && filtros[key] !== 'todos' && 
-            (typeof filtros[key] !== 'string' || filtros[key].trim() !== '') &&
-            (!Array.isArray(filtros[key]) || filtros[key].length > 0)) {
-          if (Array.isArray(filtros[key])) {
-            filtros[key].forEach(value => params.append(key, value));
-          } else {
-            params.append(key, filtros[key]);
-          }
+      // localizacaoLabel é só para display — não vai para a API
+      const SKIP = ['localizacaoLabel'];
+      Object.keys(filtrosAlvo).forEach((key) => {
+        if (SKIP.includes(key)) return;
+        const val = (filtrosAlvo as any)[key];
+        if (!val || val === 'todos') return;
+        if (typeof val === 'string' && !val.trim()) return;
+        if (Array.isArray(val)) {
+          if (val.length === 0) return;
+          val.forEach((v: string) => params.append(key, v));
+        } else {
+          params.append(key, val);
         }
       });
-      
+
       const response = await fetch(`/api/psicologos?${params.toString()}`);
       const data = await response.json();
-      
-      if (data.success) {
-        setPsicologos(data.data);
-      }
+      if (data.success) setPsicologos(data.data);
     } catch (error) {
       console.error('Erro ao carregar psicólogos:', error);
     } finally {
@@ -56,8 +59,16 @@ export default function HomePage() {
     carregarPsicologos();
   }, []);
 
-  const handleBuscar = () => {
-    carregarPsicologos();
+  const handleBuscar = (arg?: string | Record<string, any>) => {
+    if (arg && typeof arg === 'object') {
+      carregarPsicologos(arg as typeof filtros);
+    } else if (typeof arg === 'string') {
+      const filtrosNovos = { ...filtros, buscaTexto: arg };
+      setFiltros(filtrosNovos);
+      carregarPsicologos(filtrosNovos);
+    } else {
+      carregarPsicologos();
+    }
   };
 
   if (loading) return <><Header /><LoadingSpinner /></>;
@@ -95,7 +106,12 @@ export default function HomePage() {
           ) : (
             <div className={styles.cardsGrid}>
               {psicologos.map(psicologo => (
-                <PsicologoCard key={psicologo._id} psicologo={psicologo} />
+                <PsicologoCard
+                  key={psicologo._id}
+                  psicologo={psicologo}
+                  patientLat={filtros.lat ? Number(filtros.lat) : undefined}
+                  patientLng={filtros.lng ? Number(filtros.lng) : undefined}
+                />
               ))}
             </div>
           )}

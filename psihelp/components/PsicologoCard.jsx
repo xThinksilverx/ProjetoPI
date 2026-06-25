@@ -9,7 +9,21 @@ function labelModalidade(m) {
   return '📍 Presencial';
 }
 
-export default function PsicologoCard({ psicologo }) {
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+export default function PsicologoCard({ psicologo, patientLat, patientLng }) {
+  const psiLng = psicologo.localizacao?.loc?.coordinates?.[0];
+  const psiLat = psicologo.localizacao?.loc?.coordinates?.[1];
+  const distancia = (patientLat != null && patientLng != null && psiLat != null && psiLng != null)
+    ? haversineKm(patientLat, patientLng, psiLat, psiLng)
+    : null;
   return (
     <Link href={`/psicologos/${psicologo._id}`} className={styles.cardLink}>
       <div className={styles.card}>
@@ -48,6 +62,11 @@ export default function PsicologoCard({ psicologo }) {
           <div className={styles.cardDetails}>
             <span>💰 R$ {psicologo.preco}/sessão</span>
             <span>{labelModalidade(psicologo.modalidade)}</span>
+            {distancia !== null && (
+              <span className={styles.cardDistancia}>
+                ~{distancia < 1 ? '< 1' : Math.round(distancia)} km
+              </span>
+            )}
           </div>
 
           <div className={styles.cardEstrelas}>
