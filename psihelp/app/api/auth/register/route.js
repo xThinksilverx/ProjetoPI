@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import Usuario from '@/lib/models/Usuario';
-import { generateToken, setAuthCookie } from '@/lib/auth';
+import { enviarEmailVerificacao } from '@/lib/email';
+import crypto from 'crypto';
 
 export async function POST(request) {
   try {
@@ -31,30 +32,35 @@ export async function POST(request) {
       );
     }
 
+    const tokenVerificacao = crypto.randomBytes(32).toString('hex');
+    const tokenVerificacaoExpira = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
     const usuario = new Usuario({
       nome,
       email,
       senha,
-      ultimoAcesso: new Date()
+      ultimoAcesso: new Date(),
+      tokenVerificacao,
+      tokenVerificacaoExpira,
     });
 
     await usuario.save();
 
-    const token = generateToken(usuario._id);
+    try {
+      await enviarEmailVerificacao(email, nome, tokenVerificacao);
+    } catch (emailError) {
+      await Usuario.deleteOne({ _id: usuario._id });
+      console.error('Erro ao enviar email de verificação:', emailError);
+      return NextResponse.json(
+        { success: false, error: 'Não foi possível enviar o email de confirmação. Verifique as configurações de email do servidor.' },
+        { status: 500 }
+      );
+    }
 
-    const response = NextResponse.json({
+    return NextResponse.json({
       success: true,
-      data: {
-        id: usuario._id,
-        nome: usuario.nome,
-        email: usuario.email,
-        tipo: usuario.tipo
-      }
+      message: 'Conta criada! Verifique seu email para ativar o acesso.',
     });
-
-    setAuthCookie(response, token);
-
-    return response;
   } catch (error) {
     console.error('Erro no registro:', error);
     return NextResponse.json(

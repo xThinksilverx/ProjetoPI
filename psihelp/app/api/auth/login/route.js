@@ -31,6 +31,13 @@ export async function POST(request) {
       );
     }
 
+    if (!usuario.emailVerificado) {
+      return NextResponse.json(
+        { success: false, error: 'Email não verificado. Verifique sua caixa de entrada para ativar a conta.' },
+        { status: 401 }
+      );
+    }
+
     const senhaValida = await usuario.comparePassword(senha);
     if (!senhaValida) {
       return NextResponse.json(

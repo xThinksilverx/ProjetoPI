@@ -33,7 +33,15 @@ const usuarioSchema = new mongoose.Schema({
   ativo: {
     type: Boolean,
     default: true
-  }
+  },
+  emailVerificado: {
+    type: Boolean,
+    default: false
+  },
+  tokenVerificacao: String,
+  tokenVerificacaoExpira: Date,
+  tokenResetSenha: String,
+  tokenResetSenhaExpira: Date
 });
 
 usuarioSchema.pre('save', async function(next) {

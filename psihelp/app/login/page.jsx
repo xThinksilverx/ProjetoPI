@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import Header from '@/components/Header';
 import styles from '@/styles/components.module.css';
 
 export default function LoginPage() {
@@ -34,9 +35,9 @@ export default function LoginPage() {
 
     try {
       if (isLogin) {
-        const success = await login(formData.email, formData.senha);
-        if (!success) {
-          setError('Email ou senha inválidos');
+        const result = await login(formData.email, formData.senha);
+        if (!result.success) {
+          setError(result.error || 'Email ou senha inválidos');
         }
       } else {
         if (formData.senha !== formData.confirmarSenha) {
@@ -44,7 +45,7 @@ export default function LoginPage() {
           setLoading(false);
           return;
         }
-        
+
         const response = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -54,12 +55,11 @@ export default function LoginPage() {
             senha: formData.senha
           })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
-          await login(formData.email, formData.senha);
-          router.push('/');
+          router.push(`/confirmar-email?email=${encodeURIComponent(formData.email)}`);
         } else {
           setError(data.error || 'Erro ao cadastrar');
         }
@@ -72,6 +72,8 @@ export default function LoginPage() {
   };
 
   return (
+    <>
+    <Header />
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
         <div className={styles.loginHeader}>
@@ -137,6 +139,14 @@ export default function LoginPage() {
             </div>
           )}
 
+          {isLogin && (
+            <div style={{ textAlign: 'right', marginTop: '-8px' }}>
+              <Link href="/esqueci-senha" style={{ fontSize: 13, color: '#4f46e5', textDecoration: 'underline' }}>
+                Esqueceu a senha?
+              </Link>
+            </div>
+          )}
+
           {error && <div className={styles.errorBox}>{error}</div>}
 
           <button 
@@ -174,5 +184,6 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -45,13 +45,17 @@ export function AuthProvider({ children }) {
         if (tipo === 'admin') router.push('/admin');
         else if (tipo === 'psicologo') router.push('/perfil');
         else router.push('/');
-        return true;
+        return { success: true };
       }
-      return false;
+      return { success: false, error: data.error };
     } catch (error) {
       console.error('Erro no login:', error);
-      return false;
+      return { success: false, error: 'Erro ao autenticar. Tente novamente.' };
     }
+  };
+
+  const refreshUser = async () => {
+    await checkAuth();
   };
 
   const logout = async () => {
@@ -69,7 +73,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, updateUser, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

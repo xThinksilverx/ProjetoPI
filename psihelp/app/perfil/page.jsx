@@ -36,6 +36,9 @@ export default function PerfilPage() {
   const [salvando, setSalvando] = useState(false);
   const [salvandoBloqueios, setSalvandoBloqueios] = useState(false);
   const [feedback, setFeedback] = useState('');
+  const [modalExcluir, setModalExcluir] = useState(false);
+  const [confirmacaoTexto, setConfirmacaoTexto] = useState('');
+  const [excluindo, setExcluindo] = useState(false);
 
   const [dadosPessoais, setDadosPessoais] = useState({
     nome: '', telefone: '', dataNascimento: '', genero: ''
@@ -146,6 +149,21 @@ export default function PerfilPage() {
   };
 
   const mostrarFeedback = (msg) => { setFeedback(msg); setTimeout(() => setFeedback(''), 3000); };
+
+  const excluirConta = async () => {
+    setExcluindo(true);
+    try {
+      const res = await fetch('/api/auth/perfil', { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        router.push('/?conta=excluida');
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setExcluindo(false);
+    }
+  };
 
   const toggleAbordagem = (a) => setDadosProfissionais(prev => ({
     ...prev, abordagens: prev.abordagens.includes(a) ? prev.abordagens.filter(x => x !== a) : [...prev.abordagens, a]
@@ -361,6 +379,76 @@ export default function PerfilPage() {
               </div>
             )}
           </>
+        )}
+        <div className={styles.perfilCard} style={{ marginTop: '1.5rem', borderColor: '#fca5a5' }}>
+          <div className={styles.perfilHeader}>
+            <h2 style={{ color: '#dc2626' }}>Zona de Perigo</h2>
+          </div>
+          <p style={{ fontSize: '0.9rem', color: '#555', marginBottom: '1rem', lineHeight: 1.6 }}>
+            A exclusão da conta remove permanentemente todos os seus dados da plataforma,
+            em conformidade com a <strong>LGPD</strong>. Esta ação não pode ser desfeita.
+          </p>
+          <button
+            onClick={() => setModalExcluir(true)}
+            style={{
+              background: 'transparent', color: '#dc2626',
+              border: '1.5px solid #dc2626', borderRadius: 6,
+              padding: '8px 18px', cursor: 'pointer', fontWeight: 600, fontSize: '0.9rem'
+            }}
+          >
+            Excluir minha conta
+          </button>
+        </div>
+
+        {modalExcluir && (
+          <div style={{
+            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem'
+          }}>
+            <div style={{
+              background: '#fff', borderRadius: 10, padding: '2rem',
+              maxWidth: 440, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.2)'
+            }}>
+              <h3 style={{ color: '#dc2626', marginBottom: '0.75rem' }}>Excluir conta permanentemente</h3>
+              <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: 1.6, marginBottom: '1.25rem' }}>
+                Todos os seus dados serão removidos e não poderão ser recuperados.
+                Para confirmar, digite <strong>EXCLUIR</strong> abaixo:
+              </p>
+              <input
+                type="text"
+                value={confirmacaoTexto}
+                onChange={e => setConfirmacaoTexto(e.target.value)}
+                placeholder="Digite EXCLUIR"
+                style={{
+                  width: '100%', padding: '10px 12px', border: '1.5px solid #d1d5db',
+                  borderRadius: 6, fontSize: '0.95rem', marginBottom: '1.25rem', boxSizing: 'border-box'
+                }}
+              />
+              <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => { setModalExcluir(false); setConfirmacaoTexto(''); }}
+                  style={{
+                    padding: '8px 18px', borderRadius: 6, border: '1px solid #d1d5db',
+                    background: '#fff', cursor: 'pointer', fontSize: '0.9rem'
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={excluirConta}
+                  disabled={confirmacaoTexto !== 'EXCLUIR' || excluindo}
+                  style={{
+                    padding: '8px 18px', borderRadius: 6, border: 'none',
+                    background: confirmacaoTexto === 'EXCLUIR' ? '#dc2626' : '#fca5a5',
+                    color: '#fff', cursor: confirmacaoTexto === 'EXCLUIR' ? 'pointer' : 'not-allowed',
+                    fontWeight: 600, fontSize: '0.9rem'
+                  }}
+                >
+                  {excluindo ? 'Excluindo...' : 'Confirmar exclusão'}
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </>
