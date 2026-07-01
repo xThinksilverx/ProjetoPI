@@ -7,6 +7,20 @@ import Header from '@/components/Header';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import styles from '@/styles/components.module.css';
 
+const DESCRICOES_ABORDAGENS = {
+  'Terapia Cognitivo-Comportamental (TCC)': 'Identifica e modifica padrões de pensamento negativos para tratar ansiedade, depressão e outros transtornos.',
+  'Psicanálise': 'Explora o inconsciente e experiências passadas para compreender conflitos internos e aliviar o sofrimento psíquico.',
+  'Psicanálise Lacaniana': 'Releitura de Freud por Lacan, que trabalha a linguagem e o inconsciente como estruturado por ela.',
+  'Psicologia Existencial': 'Foca no sentido da vida, liberdade e responsabilidade, ajudando a enfrentar crises e questões existenciais.',
+  'Terapia Sistêmica': 'Analisa o indivíduo dentro de seus sistemas relacionais (família, trabalho) buscando equilíbrio nas dinâmicas.',
+  'Terapia de Aceitação e Compromisso (ACT)': 'Ensina a aceitar pensamentos difíceis e agir de acordo com os próprios valores, mesmo diante do sofrimento.',
+  'Gestalt-terapia': 'Foca na consciência do momento presente e na integração de emoções, pensamentos e comportamentos.',
+  'Psicologia Analítica (Jung)': 'Trabalha arquétipos, sonhos e o inconsciente coletivo para promover individuação e autoconhecimento profundo.',
+  'Mindfulness': 'Atenção plena ao momento presente — reduz estresse e ansiedade, promovendo equilíbrio emocional.',
+  'EMDR': 'Técnica de reprocessamento de memórias traumáticas por movimentos oculares, indicada para o tratamento de TEPT.',
+  'Terapia Comportamental Dialética (DBT)': 'Combina TCC com mindfulness para tratar desregulação emocional intensa e comportamentos impulsivos.',
+};
+
 const DIAS = ['segunda','terca','quarta','quinta','sexta','sabado','domingo'];
 const NOMES_DIAS  = { segunda:'Seg', terca:'Ter', quarta:'Qua', quinta:'Qui', sexta:'Sex', sabado:'Sáb', domingo:'Dom' };
 const NOMES_COMPLETOS = { segunda:'segunda-feira', terca:'terça-feira', quarta:'quarta-feira', quinta:'quinta-feira', sexta:'sexta-feira', sabado:'sábado', domingo:'domingo' };
@@ -193,7 +207,14 @@ export default function PsicologoDetalhe() {
           <div className={styles.detalheSecao}>
             <h2>Abordagens terapêuticas</h2>
             <div className={styles.abordagens}>
-              {psicologo.abordagens.map(ab => <span key={ab} className={styles.tag}>{ab}</span>)}
+              {psicologo.abordagens.map(ab => (
+                <span key={ab} className={styles.abordagemWrap}>
+                  <span className={styles.tag}>{ab}</span>
+                  {DESCRICOES_ABORDAGENS[ab] && (
+                    <span className={styles.abordagemTooltip}>{DESCRICOES_ABORDAGENS[ab]}</span>
+                  )}
+                </span>
+              ))}
             </div>
           </div>
         )}

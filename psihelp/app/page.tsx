@@ -73,50 +73,50 @@ export default function HomePage() {
   if (loading) return <><Header /><LoadingSpinner /></>;
 
   return (
-    <>
-    <Header />
-    <div className="container">
-      <div className={styles.homeHeader}>
-        <h1>Encontre o psicólogo ideal para você</h1>
-        <p>Plataforma em conformidade com o Conselho Federal de Psicologia</p>
-      </div>
-      
-      <BuscaInteligente 
-        valor={filtros.buscaTexto}
-        onChange={(texto) => setFiltros(prev => ({ ...prev, buscaTexto: texto }))}
-        onBuscar={handleBuscar}
-      />
-      
-      <div className={styles.homeContent}>
-        <FiltrosSidebar 
-          filtros={filtros}
-          setFiltros={setFiltros}
-          onFiltrar={handleBuscar}
+    <div className={styles.pageShell}>
+      <Header />
+      <div className={styles.homeWrapper}>
+        <div className={styles.homeHeader}>
+          <h1>Encontre o psicólogo ideal para você</h1>
+          <p>Plataforma em conformidade com o Conselho Federal de Psicologia</p>
+        </div>
+
+        <BuscaInteligente
+          valor={filtros.buscaTexto}
+          onChange={(texto) => setFiltros(prev => ({ ...prev, buscaTexto: texto }))}
+          onBuscar={handleBuscar}
         />
-        <div className={styles.resultadosArea}>
-          <div className={styles.resultadosHeader}>
-            <span>{psicologos.length} psicólogos encontrados</span>
+
+        <div className={styles.homeContent}>
+          <FiltrosSidebar
+            filtros={filtros}
+            setFiltros={setFiltros}
+            onFiltrar={handleBuscar}
+          />
+          <div className={styles.resultadosArea}>
+            <div className={styles.resultadosHeader}>
+              <span>{psicologos.length} psicólogos encontrados</span>
+            </div>
+            {psicologos.length === 0 ? (
+              <div className={styles.semResultados}>
+                <p>Nenhum psicólogo encontrado com os filtros selecionados.</p>
+                <p>Tente ampliar sua busca ou limpar os filtros.</p>
+              </div>
+            ) : (
+              <div className={styles.cardsGrid}>
+                {psicologos.map(psicologo => (
+                  <PsicologoCard
+                    key={psicologo._id}
+                    psicologo={psicologo}
+                    patientLat={filtros.lat ? Number(filtros.lat) : undefined}
+                    patientLng={filtros.lng ? Number(filtros.lng) : undefined}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-          {psicologos.length === 0 ? (
-            <div className={styles.semResultados}>
-              <p>Nenhum psicólogo encontrado com os filtros selecionados.</p>
-              <p>Tente ampliar sua busca ou limpar os filtros.</p>
-            </div>
-          ) : (
-            <div className={styles.cardsGrid}>
-              {psicologos.map(psicologo => (
-                <PsicologoCard
-                  key={psicologo._id}
-                  psicologo={psicologo}
-                  patientLat={filtros.lat ? Number(filtros.lat) : undefined}
-                  patientLng={filtros.lng ? Number(filtros.lng) : undefined}
-                />
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </div>
-    </>
   );
 }

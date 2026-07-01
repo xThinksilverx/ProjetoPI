@@ -164,9 +164,8 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  position: sticky;
-  top: 1rem;
-  height: fit-content;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .sidebar h3 {
@@ -596,7 +595,8 @@
 
 /* Busca */
 .buscaForm {
-  margin: 2rem 0;
+  margin: 0.75rem 0;
+  flex-shrink: 0;
 }
 
 .buscaContainer {
@@ -749,6 +749,53 @@
   font-weight: 500;
 }
 
+.abordagemWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.abordagemWrap .tag {
+  cursor: help;
+}
+
+.abordagemTooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: #f1f5f9;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  width: 210px;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  z-index: 100;
+}
+
+.abordagemTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #1e293b;
+}
+
+.abordagemWrap:hover .abordagemTooltip,
+.abordagemWrap:focus-within .abordagemTooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 .descricao {
   color: var(--text-secondary);
   font-size: 0.85rem;
@@ -795,10 +842,29 @@
   margin-top: 0.5rem;
 }
 
-/* Home */
+/* Home — layout de dois painéis com scroll independente */
+.pageShell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.homeWrapper {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
 .homeHeader {
   text-align: center;
-  margin: 2rem 0;
+  margin: 1.25rem 0 0.5rem;
+  flex-shrink: 0;
 }
 
 .homeHeader h1 {
@@ -811,10 +877,30 @@
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 2rem;
+  flex: 1;
+  min-height: 0;
 }
 
 .resultadosArea {
   background: transparent;
+  overflow-y: auto;
+  min-height: 0;
+  padding-bottom: 1.5rem;
+}
+
+/* scrollbar fina nos painéis */
+.resultadosArea::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.resultadosArea::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.resultadosArea::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 4px;
 }
 
 .resultadosHeader {
@@ -1951,13 +2037,32 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 /* Responsividade */
 @media (max-width: 900px) {
+  .pageShell {
+    height: auto;
+    overflow: visible;
+  }
+
+  .homeWrapper {
+    flex: unset;
+    overflow: visible;
+  }
+
   .homeContent {
     grid-template-columns: 1fr;
+    flex: unset;
+    min-height: unset;
+    overflow: visible;
   }
-  
+
   .sidebar {
-    position: static;
+    overflow-y: visible;
+    height: auto;
     margin-bottom: 1.5rem;
+  }
+
+  .resultadosArea {
+    overflow-y: visible;
+    padding-bottom: 0;
   }
   
   .cardsGrid {

@@ -18,7 +18,11 @@
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\otavi\\\\Documents\\\\projetopi-main\\\\projetopi-main\" -Depth 2 | Where-Object { $_.Name -notmatch \"node_modules\" } | Select-Object FullName, PSIsContainer)",
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\otavi\\\\Documents\\\\projetopi-main\\\\projetopi-main\\\\psihelp\\\\app\" -Recurse | Where-Object { $_.Name -notmatch \"node_modules\" -and -not $_.PSIsContainer } | Select-Object FullName)",
       "Bash(npx next *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(nslookup *)",
+      "Skill(run)",
+      "Bash(Start-Process -NoNewWindow -FilePath \"npx\" -ArgumentList \"next\",\"dev\",\"--port\",\"3001\")",
+      "Bash(Start-Sleep 12)"
     ]
   }
 }

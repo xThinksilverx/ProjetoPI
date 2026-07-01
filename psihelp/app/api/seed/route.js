@@ -1,33 +1,5 @@
-const mongoose = require('mongoose');
-require('dotenv').config({ path: '.env.local' });
-
-const psicologoSchema = new mongoose.Schema({
-  nome: String,
-  crp: String,
-  email: String,
-  telefone: String,
-  formacao: String,
-  descricao: String,
-  foto: String,
-  preco: Number,
-  modalidade: String,
-  avaliacao: Number,
-  validado: Boolean,
-  abordagens: [String],
-  especializacoes: [String],
-  localizacao: {
-    cidade: String,
-    estado: String,
-    endereco: String
-  },
-  disponibilidade: [{
-    dia: String,
-    horarios: [String]
-  }],
-  criadoEm: Date
-});
-
-const Psicologo = mongoose.models.Psicologo || mongoose.model('Psicologo', psicologoSchema);
+import { connectDB } from '@/lib/mongodb';
+import Psicologo from '@/lib/models/Psicologos';
 
 const psicologos = [
   {
@@ -41,20 +13,16 @@ const psicologos = [
     preco: 180,
     modalidade: "online",
     avaliacao: 4.9,
+    totalAvaliacoes: 37,
     validado: true,
-    abordagens: ["Terapia Cognitivo-Comportamental", "Mindfulness"],
+    abordagens: ["Terapia Cognitivo-Comportamental (TCC)", "Mindfulness"],
     especializacoes: ["Ansiedade", "Depressão", "Transtorno de Pânico"],
-    localizacao: {
-      cidade: "Belo Horizonte",
-      estado: "MG",
-      endereco: "Atendimento online"
-    },
+    localizacao: { cidade: "Belo Horizonte", estado: "MG", endereco: "Atendimento online" },
     disponibilidade: [
       { dia: "segunda", horarios: ["09:00", "10:00", "14:00"] },
-      { dia: "quarta", horarios: ["09:00", "10:00"] },
-      { dia: "sexta", horarios: ["14:00", "15:00"] }
+      { dia: "quarta",  horarios: ["09:00", "10:00"] },
+      { dia: "sexta",   horarios: ["14:00", "15:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dr. Carlos Mendes",
@@ -67,20 +35,16 @@ const psicologos = [
     preco: 220,
     modalidade: "presencial",
     avaliacao: 4.7,
+    totalAvaliacoes: 21,
     validado: true,
     abordagens: ["Psicanálise Lacaniana", "Psicologia Existencial"],
     especializacoes: ["Luto", "Crise Existencial", "Relacionamentos"],
-    localizacao: {
-      cidade: "Rio de Janeiro",
-      estado: "RJ",
-      endereco: "Rua Voluntários da Pátria, 280 - Botafogo"
-    },
+    localizacao: { cidade: "Rio de Janeiro", estado: "RJ", endereco: "Rua Voluntários da Pátria, 280 - Botafogo" },
     disponibilidade: [
-      { dia: "terca", horarios: ["10:00", "11:00", "15:00"] },
+      { dia: "terca",  horarios: ["10:00", "11:00", "15:00"] },
       { dia: "quinta", horarios: ["10:00", "11:00"] },
       { dia: "sabado", horarios: ["09:00", "10:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dra. Fernanda Lima",
@@ -93,20 +57,16 @@ const psicologos = [
     preco: 150,
     modalidade: "online",
     avaliacao: 5.0,
+    totalAvaliacoes: 58,
     validado: true,
-    abordagens: ["Terapia Cognitivo-Comportamental", "Terapia de Aceitação e Compromisso"],
+    abordagens: ["Terapia Cognitivo-Comportamental (TCC)", "Terapia de Aceitação e Compromisso (ACT)"],
     especializacoes: ["TDAH", "Autismo leve", "Gestão de estresse"],
-    localizacao: {
-      cidade: "São Paulo",
-      estado: "SP",
-      endereco: "Atendimento online"
-    },
+    localizacao: { cidade: "São Paulo", estado: "SP", endereco: "Atendimento online" },
     disponibilidade: [
       { dia: "segunda", horarios: ["08:00", "09:00", "13:00"] },
-      { dia: "terca", horarios: ["08:00", "09:00"] },
-      { dia: "quinta", horarios: ["13:00", "14:00", "15:00"] }
+      { dia: "terca",   horarios: ["08:00", "09:00"] },
+      { dia: "quinta",  horarios: ["13:00", "14:00", "15:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dr. Rafael Almeida",
@@ -119,20 +79,16 @@ const psicologos = [
     preco: 200,
     modalidade: "presencial",
     avaliacao: 4.8,
+    totalAvaliacoes: 29,
     validado: true,
     abordagens: ["Gestalt-terapia", "Psicologia Existencial"],
     especializacoes: ["Relacionamentos", "Autoconhecimento", "Crise de identidade"],
-    localizacao: {
-      cidade: "São Paulo",
-      estado: "SP",
-      endereco: "Av. Paulista, 1234 - Bela Vista"
-    },
+    localizacao: { cidade: "São Paulo", estado: "SP", endereco: "Av. Paulista, 1234 - Bela Vista" },
     disponibilidade: [
       { dia: "segunda", horarios: ["11:00", "14:00", "15:00"] },
-      { dia: "quarta", horarios: ["11:00", "14:00"] },
-      { dia: "sexta", horarios: ["09:00", "10:00", "11:00"] }
+      { dia: "quarta",  horarios: ["11:00", "14:00"] },
+      { dia: "sexta",   horarios: ["09:00", "10:00", "11:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dra. Juliana Martins",
@@ -145,20 +101,16 @@ const psicologos = [
     preco: 170,
     modalidade: "online",
     avaliacao: 4.6,
+    totalAvaliacoes: 14,
     validado: true,
     abordagens: ["Terapia Comportamental Dialética (DBT)", "Terapia de Aceitação e Compromisso (ACT)"],
     especializacoes: ["Trauma", "Regulação emocional", "Transtorno de personalidade borderline"],
-    localizacao: {
-      cidade: "Porto Alegre",
-      estado: "RS",
-      endereco: "Atendimento online"
-    },
+    localizacao: { cidade: "Porto Alegre", estado: "RS", endereco: "Atendimento online" },
     disponibilidade: [
-      { dia: "terca", horarios: ["08:00", "09:00", "10:00"] },
+      { dia: "terca",  horarios: ["08:00", "09:00", "10:00"] },
       { dia: "quinta", horarios: ["08:00", "09:00"] },
       { dia: "sabado", horarios: ["10:00", "11:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dr. Pedro Oliveira",
@@ -171,20 +123,16 @@ const psicologos = [
     preco: 160,
     modalidade: "ambos",
     avaliacao: 4.5,
+    totalAvaliacoes: 18,
     validado: true,
     abordagens: ["Psicanálise", "Psicologia Existencial"],
     especializacoes: ["Ansiedade", "Fobia", "Sofrimento psíquico"],
-    localizacao: {
-      cidade: "Salvador",
-      estado: "BA",
-      endereco: "Rua da Bahia, 500 - Nazaré"
-    },
+    localizacao: { cidade: "Salvador", estado: "BA", endereco: "Rua da Bahia, 500 - Nazaré" },
     disponibilidade: [
       { dia: "segunda", horarios: ["16:00", "17:00", "18:00"] },
-      { dia: "quarta", horarios: ["16:00", "17:00"] },
-      { dia: "sexta", horarios: ["16:00", "17:00", "18:00"] }
+      { dia: "quarta",  horarios: ["16:00", "17:00"] },
+      { dia: "sexta",   horarios: ["16:00", "17:00", "18:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dra. Camila Rodrigues",
@@ -197,20 +145,16 @@ const psicologos = [
     preco: 190,
     modalidade: "online",
     avaliacao: 4.9,
+    totalAvaliacoes: 43,
     validado: true,
     abordagens: ["Terapia Cognitivo-Comportamental (TCC)", "Mindfulness"],
     especializacoes: ["Burnout", "Estresse ocupacional", "Qualidade de vida"],
-    localizacao: {
-      cidade: "Curitiba",
-      estado: "PR",
-      endereco: "Atendimento online"
-    },
+    localizacao: { cidade: "Curitiba", estado: "PR", endereco: "Atendimento online" },
     disponibilidade: [
-      { dia: "terca", horarios: ["12:00", "13:00", "19:00", "20:00"] },
+      { dia: "terca",  horarios: ["12:00", "13:00", "19:00", "20:00"] },
       { dia: "quinta", horarios: ["12:00", "13:00", "19:00"] },
       { dia: "sabado", horarios: ["09:00", "10:00", "11:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dr. Lucas Pereira",
@@ -223,20 +167,16 @@ const psicologos = [
     preco: 140,
     modalidade: "presencial",
     avaliacao: 4.7,
+    totalAvaliacoes: 33,
     validado: true,
     abordagens: ["Terapia Sistêmica", "Psicologia Existencial"],
     especializacoes: ["Conflitos familiares", "Terapia de casal", "Comunicação"],
-    localizacao: {
-      cidade: "Fortaleza",
-      estado: "CE",
-      endereco: "Av. Dom Luís, 300 - Aldeota"
-    },
+    localizacao: { cidade: "Fortaleza", estado: "CE", endereco: "Av. Dom Luís, 300 - Aldeota" },
     disponibilidade: [
       { dia: "segunda", horarios: ["09:00", "10:00", "11:00"] },
-      { dia: "quarta", horarios: ["09:00", "10:00"] },
-      { dia: "quinta", horarios: ["14:00", "15:00", "16:00"] }
+      { dia: "quarta",  horarios: ["09:00", "10:00"] },
+      { dia: "quinta",  horarios: ["14:00", "15:00", "16:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dra. Mariana Santos",
@@ -249,20 +189,16 @@ const psicologos = [
     preco: 210,
     modalidade: "online",
     avaliacao: 4.8,
+    totalAvaliacoes: 26,
     validado: true,
     abordagens: ["Psicologia Analítica (Jung)", "Mindfulness"],
     especializacoes: ["Autoconhecimento", "Crise de meia-idade", "Espiritualidade"],
-    localizacao: {
-      cidade: "Belo Horizonte",
-      estado: "MG",
-      endereco: "Atendimento online"
-    },
+    localizacao: { cidade: "Belo Horizonte", estado: "MG", endereco: "Atendimento online" },
     disponibilidade: [
       { dia: "segunda", horarios: ["10:00", "11:00"] },
-      { dia: "terca", horarios: ["14:00", "15:00", "16:00"] },
-      { dia: "quinta", horarios: ["10:00", "11:00", "14:00"] }
+      { dia: "terca",   horarios: ["14:00", "15:00", "16:00"] },
+      { dia: "quinta",  horarios: ["10:00", "11:00", "14:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dr. Thiago Costa",
@@ -275,20 +211,16 @@ const psicologos = [
     preco: 230,
     modalidade: "ambos",
     avaliacao: 5.0,
+    totalAvaliacoes: 19,
     validado: true,
     abordagens: ["EMDR", "Terapia Cognitivo-Comportamental (TCC)"],
     especializacoes: ["TEPT", "Trauma", "Abuso e violência"],
-    localizacao: {
-      cidade: "Goiânia",
-      estado: "GO",
-      endereco: "Rua 68, 150 - Setor Sul"
-    },
+    localizacao: { cidade: "Goiânia", estado: "GO", endereco: "Rua 68, 150 - Setor Sul" },
     disponibilidade: [
       { dia: "segunda", horarios: ["13:00", "14:00", "15:00"] },
-      { dia: "quarta", horarios: ["13:00", "14:00", "15:00"] },
-      { dia: "sexta", horarios: ["13:00", "14:00"] }
+      { dia: "quarta",  horarios: ["13:00", "14:00", "15:00"] },
+      { dia: "sexta",   horarios: ["13:00", "14:00"] }
     ],
-    criadoEm: new Date()
   },
   {
     nome: "Dra. Isabela Ferreira",
@@ -301,39 +233,32 @@ const psicologos = [
     preco: 155,
     modalidade: "online",
     avaliacao: 4.6,
+    totalAvaliacoes: 11,
     validado: true,
     abordagens: ["Mindfulness", "Terapia Cognitivo-Comportamental (TCC)"],
     especializacoes: ["Autoestima", "Assertividade", "Desenvolvimento pessoal"],
-    localizacao: {
-      cidade: "Florianópolis",
-      estado: "SC",
-      endereco: "Atendimento online"
-    },
+    localizacao: { cidade: "Florianópolis", estado: "SC", endereco: "Atendimento online" },
     disponibilidade: [
-      { dia: "terca", horarios: ["17:00", "18:00", "19:00"] },
+      { dia: "terca",  horarios: ["17:00", "18:00", "19:00"] },
       { dia: "quarta", horarios: ["17:00", "18:00"] },
-      { dia: "sexta", horarios: ["17:00", "18:00", "19:00"] }
+      { dia: "sexta",  horarios: ["17:00", "18:00", "19:00"] }
     ],
-    criadoEm: new Date()
-  }
+  },
 ];
 
-async function seed() {
+export async function GET() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Conectado ao MongoDB');
-    
+    await connectDB();
+
     await Psicologo.deleteMany({});
-    console.log('Coleção limpa');
-    
     await Psicologo.insertMany(psicologos);
-    console.log(`${psicologos.length} psicólogos inseridos com sucesso!`);
-    
-    process.exit(0);
-  } catch (error) {
-    console.error('Erro ao seedar:', error);
-    process.exit(1);
+
+    return Response.json({
+      success: true,
+      message: `${psicologos.length} psicólogos inseridos com sucesso.`,
+    });
+  } catch (err) {
+    console.error(err);
+    return Response.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
-seed();
