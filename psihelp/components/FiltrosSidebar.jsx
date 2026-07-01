@@ -385,7 +385,7 @@ export default function FiltrosSidebar({ filtros, setFiltros, onFiltrar }) {
         </div>
       </div>
 
-      <button className={styles.btnAplicar} onClick={onFiltrar} style={{ width: '100%', padding: '0.65rem' }}>
+      <button className={styles.btnAplicar} onClick={() => onFiltrar()} style={{ width: '100%', padding: '0.65rem' }}>
         Aplicar filtros
         {ativos > 0 && ` (${ativos})`}
       </button>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
@@ -16,6 +16,7 @@ const ABORDAGENS_COMUNS = [
 
 const DIAS = ['segunda','terca','quarta','quinta','sexta','sabado','domingo'];
 const NOMES_DIAS = { segunda:'Seg', terca:'Ter', quarta:'Qua', quinta:'Qui', sexta:'Sex', sabado:'Sáb', domingo:'Dom' };
+const NOMES_DIAS_FULL = { segunda:'Segunda-feira', terca:'Terça-feira', quarta:'Quarta-feira', quinta:'Quinta-feira', sexta:'Sexta-feira', sabado:'Sábado', domingo:'Domingo' };
 const HORARIOS = ['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 
 function isDisponivel(disponibilidade, dia, horario) {
@@ -39,6 +40,9 @@ export default function PerfilPage() {
   const [modalExcluir, setModalExcluir] = useState(false);
   const [confirmacaoTexto, setConfirmacaoTexto] = useState('');
   const [excluindo, setExcluindo] = useState(false);
+
+  const modalRef = useRef(null);
+  const excluirBtnRef = useRef(null);
 
   const [dadosPessoais, setDadosPessoais] = useState({
     nome: '', telefone: '', dataNascimento: '', genero: ''
@@ -149,6 +153,30 @@ export default function PerfilPage() {
   };
 
   const mostrarFeedback = (msg) => { setFeedback(msg); setTimeout(() => setFeedback(''), 3000); };
+
+  const fecharModal = () => {
+    setModalExcluir(false);
+    setConfirmacaoTexto('');
+    requestAnimationFrame(() => excluirBtnRef.current?.focus());
+  };
+
+  useEffect(() => {
+    if (!modalExcluir || !modalRef.current) return;
+    const modal = modalRef.current;
+    const sel = 'button:not([disabled]), input:not([disabled]), [href], select, textarea, [tabindex]:not([tabindex="-1"])';
+    const els = Array.from(modal.querySelectorAll(sel));
+    if (els.length === 0) return;
+    els[0].focus();
+    const trap = (e) => {
+      if (e.key === 'Escape') { fecharModal(); return; }
+      if (e.key !== 'Tab') return;
+      const first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    modal.addEventListener('keydown', trap);
+    return () => modal.removeEventListener('keydown', trap);
+  }, [modalExcluir]);
 
   const excluirConta = async () => {
     setExcluindo(true);
@@ -299,7 +327,7 @@ export default function PerfilPage() {
                   <div className={styles.formGroup}>
                     <label>Estado (sigla)</label>
                     <input type="text" maxLength={2} value={dadosProfissionais.localizacao.estado}
-                      onChange={e => setDadosProfissionais(p => ({ ...p, localizacao: { ...p.localizacao, estado: e.target.value.toUpperCase() } }))} placeholder="SP" />
+                      onChange={e => setDadosProfissionais(p => ({ ...p, localizacao: { ...p.localizacao, estado: e.target.value.toUpperCase() } }))} placeholder="SC" />
                   </div>
                   <div className={styles.formGroup}>
                     <label>Abordagens</label>
@@ -333,11 +361,11 @@ export default function PerfilPage() {
                   <span><span className={styles.legendaVermelho} /> Horário bloqueado</span>
                 </div>
                 <div style={{ overflowX: 'auto', marginTop: '0.75rem' }}>
-                  <table className={styles.gradeTable}>
+                  <table className={styles.gradeTable} aria-label="Grade de disponibilidade por dia e horário">
                     <thead>
                       <tr>
-                        <th className={styles.gradeHora}></th>
-                        {DIAS.map(d => <th key={d} className={styles.gradeDia}>{NOMES_DIAS[d]}</th>)}
+                        <th scope="col" className={styles.gradeHora}><span className="sr-only">Horário</span></th>
+                        {DIAS.map(d => <th key={d} scope="col" className={styles.gradeDia}>{NOMES_DIAS[d]}</th>)}
                       </tr>
                     </thead>
                     <tbody>
@@ -346,10 +374,10 @@ export default function PerfilPage() {
                         if (!temAlgum) return null;
                         return (
                           <tr key={h}>
-                            <td className={styles.gradeHora}>{h}</td>
+                            <th scope="row" className={styles.gradeHora}>{h}</th>
                             {DIAS.map(d => {
                               const disponivel = isDisponivel(dadosProfissionais.disponibilidade, d, h);
-                              if (!disponivel) return <td key={d} className={styles.gradeCell}><div className={styles.gradeVazio} /></td>;
+                              if (!disponivel) return <td key={d} className={styles.gradeCell}><div className={styles.gradeVazio} aria-hidden="true" /></td>;
                               const bloqueado = isBloqueado(dadosProfissionais.bloqueados, d, h);
                               return (
                                 <td key={d} className={styles.gradeCell}>
@@ -357,7 +385,8 @@ export default function PerfilPage() {
                                     type="button"
                                     onClick={() => toggleBloqueio(d, h)}
                                     className={bloqueado ? styles.gradeBloqueado : styles.gradeSelecionado}
-                                    title={bloqueado ? 'Clique para liberar' : 'Clique para bloquear'}
+                                    aria-label={`${NOMES_DIAS_FULL[d]}, ${h} – ${bloqueado ? 'bloqueado, clique para liberar' : 'disponível, clique para bloquear'}`}
+                                    aria-pressed={bloqueado}
                                   />
                                 </td>
                               );
@@ -389,6 +418,7 @@ export default function PerfilPage() {
             em conformidade com a <strong>LGPD</strong>. Esta ação não pode ser desfeita.
           </p>
           <button
+            ref={excluirBtnRef}
             onClick={() => setModalExcluir(true)}
             style={{
               background: 'transparent', color: '#dc2626',
@@ -401,16 +431,24 @@ export default function PerfilPage() {
         </div>
 
         {modalExcluir && (
-          <div style={{
-            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem'
-          }}>
-            <div style={{
-              background: '#fff', borderRadius: 10, padding: '2rem',
-              maxWidth: 440, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.2)'
-            }}>
-              <h3 style={{ color: '#dc2626', marginBottom: '0.75rem' }}>Excluir conta permanentemente</h3>
-              <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: 1.6, marginBottom: '1.25rem' }}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-excluir-titulo"
+            style={{
+              position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem'
+            }}
+          >
+            <div
+              ref={modalRef}
+              style={{
+                background: 'var(--bg-card)', borderRadius: 10, padding: '2rem',
+                maxWidth: 440, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.2)'
+              }}
+            >
+              <h3 id="modal-excluir-titulo" style={{ color: '#dc2626', marginBottom: '0.75rem' }}>Excluir conta permanentemente</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem' }}>
                 Todos os seus dados serão removidos e não poderão ser recuperados.
                 Para confirmar, digite <strong>EXCLUIR</strong> abaixo:
               </p>
@@ -419,17 +457,20 @@ export default function PerfilPage() {
                 value={confirmacaoTexto}
                 onChange={e => setConfirmacaoTexto(e.target.value)}
                 placeholder="Digite EXCLUIR"
+                aria-label="Confirmação de exclusão — digite EXCLUIR"
                 style={{
-                  width: '100%', padding: '10px 12px', border: '1.5px solid #d1d5db',
+                  width: '100%', padding: '10px 12px',
+                  border: '1.5px solid var(--border-light)',
+                  background: 'var(--bg-input)', color: 'var(--text-primary)',
                   borderRadius: 6, fontSize: '0.95rem', marginBottom: '1.25rem', boxSizing: 'border-box'
                 }}
               />
               <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
                 <button
-                  onClick={() => { setModalExcluir(false); setConfirmacaoTexto(''); }}
+                  onClick={fecharModal}
                   style={{
-                    padding: '8px 18px', borderRadius: 6, border: '1px solid #d1d5db',
-                    background: '#fff', cursor: 'pointer', fontSize: '0.9rem'
+                    padding: '8px 18px', borderRadius: 6, border: '1px solid var(--border-light)',
+                    background: 'var(--bg-card)', color: 'var(--text-primary)', cursor: 'pointer', fontSize: '0.9rem'
                   }}
                 >
                   Cancelar

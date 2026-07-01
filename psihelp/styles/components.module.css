@@ -40,6 +40,21 @@
   text-decoration: underline;
 }
 
+.themeToggle {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  border-radius: 8px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.themeToggle:hover {
+  background: rgba(255,255,255,0.25);
+}
+
 /* User Menu */
 .userMenu {
   position: relative;
@@ -60,7 +75,7 @@
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
+  background: var(--bg-card);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   min-width: 150px;
@@ -78,9 +93,9 @@
 .dropdownLink {
   display: block;
   padding: 0.75rem 1rem;
-  color: #1e293b;
+  color: var(--text-primary);
   text-decoration: none;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border);
   background: none;
   width: 100%;
   text-align: left;
@@ -92,13 +107,13 @@
 }
 
 .dropdownLink:hover {
-  background-color: #f1f5f9;
+  background-color: var(--bg-hover);
 }
 
 /* Footer */
 .footer {
-  background-color: #1e293b;
-  color: #cbd5e1;
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
   padding: 2rem 0 1rem;
   margin-top: 3rem;
 }
@@ -139,13 +154,13 @@
 .footerBottom {
   text-align: center;
   padding-top: 1rem;
-  border-top: 1px solid #334155;
+  border-top: 1px solid var(--footer-border);
   font-size: 0.8rem;
 }
 
 /* Sidebar */
 .sidebar {
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -156,12 +171,12 @@
 
 .sidebar h3 {
   margin-bottom: 1.5rem;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .filtroGrupo {
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border);
   padding-bottom: 1rem;
 }
 
@@ -180,9 +195,11 @@
 .select, .input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-light);
   border-radius: 6px;
   font-size: 0.9rem;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 .rangeContainer {
@@ -209,20 +226,20 @@
   align-items: center;
   margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--border);
 }
 
 .filtrosTituloPrincipal {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .filtrosBadge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #2a5298;
+  background: var(--color-primary);
   color: white;
   font-size: 0.7rem;
   font-weight: 700;
@@ -236,7 +253,7 @@
 .filtrosLimparTudo {
   background: none;
   border: none;
-  color: #2a5298;
+  color: var(--color-primary);
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -245,13 +262,13 @@
 }
 
 .filtrosLimparTudo:hover {
-  color: #1e3c72;
+  color: var(--color-primary-dark);
 }
 
 .filtroRotulo {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #334155;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 0 0 0.6rem 0;
@@ -264,8 +281,8 @@
 .filtroContador {
   font-size: 0.72rem;
   font-weight: 600;
-  color: #2a5298;
-  background: #eff6ff;
+  color: var(--color-primary);
+  background: var(--bg-blue-light);
   border-radius: 10px;
   padding: 1px 7px;
   text-transform: none;
@@ -282,39 +299,39 @@
   flex: 1;
   min-width: 60px;
   padding: 0.4rem 0.3rem;
-  border: 1.5px solid #cbd5e1;
+  border: 1.5px solid var(--border-light);
   border-radius: 8px;
-  background: white;
+  background: var(--bg-card);
   font-size: 0.78rem;
   font-weight: 600;
-  color: #475569;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s;
   text-align: center;
 }
 
 .filtroModalidadeBtn:hover {
-  border-color: #2a5298;
-  color: #2a5298;
-  background: #eff6ff;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--bg-blue-light);
 }
 
 .filtroModalidadeBtnAtivo {
-  border-color: #2a5298;
-  background: #2a5298;
+  border-color: var(--color-primary);
+  background: var(--color-primary);
   color: white;
 }
 
 .filtroModalidadeBtnAtivo:hover {
-  background: #1e3c72;
-  border-color: #1e3c72;
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
   color: white;
 }
 
 .filtrosVerMais {
   background: none;
   border: none;
-  color: #2a5298;
+  color: var(--color-primary);
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -342,29 +359,30 @@
 
 .filtroPrecoLabel {
   font-size: 0.72rem;
-  color: #64748b;
+  color: var(--text-faint);
   font-weight: 600;
 }
 
 .filtroPrecoInput {
   width: 100%;
   padding: 0.4rem 0.5rem;
-  border: 1.5px solid #cbd5e1;
+  border: 1.5px solid var(--border-light);
   border-radius: 6px;
   font-size: 0.85rem;
-  color: #1e293b;
-  background: white;
+  color: var(--text-primary);
+  background: var(--bg-card);
   transition: border-color 0.15s;
 }
 
 .filtroPrecoInput:focus {
   outline: none;
-  border-color: #2a5298;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.3);
 }
 
 .filtroPrecoSep {
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--text-faint2);
   padding-bottom: 0.4rem;
 }
 
@@ -385,7 +403,7 @@
 
 .filtroEstrelaLabel {
   font-size: 0.78rem;
-  color: #2a5298;
+  color: var(--color-primary);
   font-weight: 600;
   margin-left: 0.35rem;
   white-space: nowrap;
@@ -401,10 +419,10 @@
 .filtroLocGeoBtn {
   width: 100%;
   padding: 0.55rem 0.75rem;
-  background: #eff6ff;
-  border: 1.5px solid #bfdbfe;
+  background: var(--bg-blue-light);
+  border: 1.5px solid var(--border-blue);
   border-radius: 8px;
-  color: #1d4ed8;
+  color: var(--color-blue-vivid);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -413,7 +431,7 @@
 }
 
 .filtroLocGeoBtn:hover:not(:disabled) {
-  background: #dbeafe;
+  background: var(--bg-blue-hover);
   border-color: #93c5fd;
 }
 
@@ -426,7 +444,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #94a3b8;
+  color: var(--text-faint2);
   font-size: 0.75rem;
 }
 
@@ -435,7 +453,7 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: #e2e8f0;
+  background: var(--border);
 }
 
 .filtroLocCepRow {
@@ -446,20 +464,23 @@
 .filtroLocCepInput {
   flex: 1;
   padding: 0.4rem 0.5rem;
-  border: 1.5px solid #cbd5e1;
+  border: 1.5px solid var(--border-light);
   border-radius: 6px;
   font-size: 0.85rem;
   transition: border-color 0.15s;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 .filtroLocCepInput:focus {
   outline: none;
-  border-color: #2a5298;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.3);
 }
 
 .filtroLocCepBtn {
   padding: 0.4rem 0.65rem;
-  background: #2a5298;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 6px;
@@ -471,7 +492,7 @@
 }
 
 .filtroLocCepBtn:hover:not(:disabled) {
-  background: #1e3c72;
+  background: var(--color-primary-dark);
 }
 
 .filtroLocCepBtn:disabled {
@@ -498,7 +519,7 @@
 .filtroLocClear {
   background: none;
   border: none;
-  color: #94a3b8;
+  color: var(--text-faint2);
   font-size: 1.1rem;
   cursor: pointer;
   line-height: 1;
@@ -517,8 +538,8 @@
 
 /* Distância nos cards */
 .cardDistancia {
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: var(--bg-blue-light);
+  color: var(--color-blue-vivid);
   border-radius: 10px;
   padding: 2px 8px;
   font-size: 0.75rem;
@@ -556,21 +577,21 @@
 }
 
 .btnAplicar {
-  background-color: #2a5298;
+  background-color: var(--color-primary);
   color: white;
 }
 
 .btnAplicar:hover {
-  background-color: #1e3c72;
+  background-color: var(--color-primary-dark);
 }
 
 .btnLimpar {
-  background-color: #e2e8f0;
-  color: #1e293b;
+  background-color: var(--border);
+  color: var(--text-primary);
 }
 
 .btnLimpar:hover {
-  background-color: #cbd5e1;
+  background-color: var(--border-light);
 }
 
 /* Busca */
@@ -586,19 +607,22 @@
 .buscaInput {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border);
   border-radius: 40px;
   font-size: 1rem;
   transition: border-color 0.3s;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 .buscaInput:focus {
   outline: none;
-  border-color: #2a5298;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.3);
 }
 
 .buscaButton {
-  background-color: #2a5298;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   border-radius: 40px;
@@ -615,7 +639,7 @@
 }
 
 .card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -651,10 +675,10 @@
   border-radius: 50%;
   object-fit: cover;
   object-position: top center;
-  border: 3px solid white;
+  border: 3px solid var(--bg-page);
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   display: block;
-  background: #e2e8f0;
+  background: var(--border);
 }
 
 .validadoBadge {
@@ -679,7 +703,7 @@
 .cardNome {
   text-align: center;
   font-size: 1rem;
-  color: #1e293b;
+  color: var(--text-primary);
   margin-bottom: 0.2rem;
   font-weight: 700;
 }
@@ -689,21 +713,21 @@
   padding-top: 0.75rem;
   width: 100%;
   text-align: center;
-  background: #eff6ff;
+  background: var(--bg-blue-light);
   border-radius: 8px;
   padding: 0.55rem;
   font-weight: 600;
-  color: #2a5298;
+  color: var(--color-primary);
   font-size: 0.85rem;
   transition: background 0.2s;
 }
 
 .cardLink:hover .btnVerPerfil {
-  background: #dbeafe;
+  background: var(--bg-blue-hover);
 }
 
 .crp {
-  color: #64748b;
+  color: var(--text-faint);
   font-size: 0.8rem;
   margin-bottom: 0.75rem;
   text-align: center;
@@ -726,7 +750,7 @@
 }
 
 .descricao {
-  color: #475569;
+  color: var(--text-secondary);
   font-size: 0.85rem;
   margin-bottom: 0.75rem;
   line-height: 1.4;
@@ -736,7 +760,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
-  color: #334155;
+  color: var(--text-muted);
   margin-bottom: 1rem;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -744,22 +768,22 @@
 
 .btnContato {
   width: 100%;
-  background-color: #f1f5f9;
+  background-color: var(--bg-hover);
   border: none;
   padding: 0.6rem;
   border-radius: 8px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-primary);
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .btnContato:hover {
-  background-color: #e2e8f0;
+  background-color: var(--border);
 }
 
 .contatoInfo {
-  background-color: #f8fafc;
+  background-color: var(--bg-subtle);
   padding: 0.75rem;
   border-radius: 8px;
   font-size: 0.8rem;
@@ -767,7 +791,7 @@
 
 .sigiloMsg {
   font-size: 0.7rem;
-  color: #64748b;
+  color: var(--text-faint);
   margin-top: 0.5rem;
 }
 
@@ -779,7 +803,7 @@
 
 .homeHeader h1 {
   font-size: 2rem;
-  color: #1e293b;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -796,15 +820,15 @@
 .resultadosHeader {
   margin-bottom: 1rem;
   font-weight: 500;
-  color: #475569;
+  color: var(--text-secondary);
 }
 
 .semResultados {
   text-align: center;
   padding: 3rem;
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
-  color: #64748b;
+  color: var(--text-faint);
 }
 
 /* Login */
@@ -817,7 +841,7 @@
 }
 
 .loginCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 2rem;
   max-width: 450px;
@@ -831,12 +855,12 @@
 }
 
 .loginHeader h2 {
-  color: #1e293b;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
 .loginHeader p {
-  color: #64748b;
+  color: var(--text-faint);
   font-size: 0.9rem;
 }
 
@@ -854,23 +878,23 @@
 .switchButton {
   background: none;
   border: none;
-  color: #2a5298;
+  color: var(--color-primary);
   cursor: pointer;
   font-size: 0.9rem;
   text-decoration: underline;
 }
 
 .switchButton:hover {
-  color: #1e3c72;
+  color: var(--color-primary-dark);
 }
 
 .ethicsInfo {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border);
   font-size: 0.75rem;
   text-align: center;
-  color: #64748b;
+  color: var(--text-faint);
 }
 
 /* Perfil */
@@ -881,7 +905,7 @@
 }
 
 .perfilCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -893,15 +917,15 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--border);
 }
 
 .perfilHeader h2 {
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .btnEdit {
-  background-color: #e2e8f0;
+  background-color: var(--border);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -918,16 +942,16 @@
 .infoRow {
   display: flex;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--bg-hover);
 }
 
 .infoRow strong {
   width: 140px;
-  color: #475569;
+  color: var(--text-secondary);
 }
 
 .infoRow span {
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .perfilForm {
@@ -952,8 +976,8 @@
 }
 
 .btnCancel {
-  background-color: #e2e8f0;
-  color: #1e293b;
+  background-color: var(--border);
+  color: var(--text-primary);
   border: none;
   padding: 0.6rem 1.5rem;
   border-radius: 8px;
@@ -977,7 +1001,7 @@
 
 /* Formulário Cadastro */
 .formContainer {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 2rem;
   margin-bottom: 2rem;
@@ -1014,27 +1038,29 @@
 .formGroup label {
   font-weight: 600;
   font-size: 0.9rem;
-  color: #334155;
+  color: var(--text-muted);
 }
 
 .formGroup input, .formGroup select, .formGroup textarea {
   padding: 0.6rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-light);
   border-radius: 8px;
   font-size: 0.9rem;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 .formGroup input:focus, .formGroup select:focus, .formGroup textarea:focus {
   outline: none;
-  border-color: #2a5298;
-  box-shadow: 0 0 0 2px rgba(42,82,152,0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.3);
 }
 
 .checkboxGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 0.5rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   padding: 0.75rem;
   border-radius: 8px;
   max-height: 200px;
@@ -1059,7 +1085,7 @@
 
 .horariosLista {
   margin-top: 0.75rem;
-  background: #f8fafc;
+  background: var(--bg-subtle);
   padding: 0.75rem;
   border-radius: 8px;
 }
@@ -1073,14 +1099,14 @@
 }
 
 .horarioTag {
-  background: white;
+  background: var(--bg-card);
   padding: 0.2rem 0.5rem;
   border-radius: 16px;
   font-size: 0.75rem;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-light);
 }
 
 .horarioTag button {
@@ -1113,13 +1139,13 @@
 }
 
 .linkCfp {
-  color: #2a5298;
+  color: var(--color-primary);
   text-decoration: underline;
   font-weight: 600;
 }
 
 .linkCfp:hover {
-  color: #1e3c72;
+  color: var(--color-primary-dark);
 }
 
 /* Feedback de validação do CRP */
@@ -1154,7 +1180,7 @@
 }
 
 .btnSubmit {
-  background-color: #2a5298;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   padding: 0.75rem;
@@ -1167,11 +1193,11 @@
 }
 
 .btnSubmit:hover {
-  background-color: #1e3c72;
+  background-color: var(--color-primary-dark);
 }
 
 .btnSubmit:disabled {
-  background-color: #94a3b8;
+  background-color: var(--text-faint2);
   cursor: not-allowed;
 }
 
@@ -1199,7 +1225,7 @@
 
 .gradeHora {
   padding: 0.3rem 0.5rem;
-  color: #64748b;
+  color: var(--text-faint);
   font-weight: 500;
   white-space: nowrap;
   text-align: right;
@@ -1208,7 +1234,7 @@
 .gradeDia {
   padding: 0.3rem 0.4rem;
   text-align: center;
-  color: #334155;
+  color: var(--text-muted);
   font-weight: 600;
   min-width: 36px;
 }
@@ -1221,7 +1247,7 @@
 .gradeSelecionado {
   width: 30px;
   height: 30px;
-  background: #2a5298;
+  background: var(--color-primary);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -1231,15 +1257,15 @@
 .gradeVazio {
   width: 30px;
   height: 30px;
-  background: #f1f5f9;
+  background: var(--bg-hover);
   border: none;
   border-radius: 4px;
   cursor: pointer;
   display: inline-block;
 }
 
-button.gradeSelecionado:hover { background: #1e3c72; }
-button.gradeVazio:hover { background: #e2e8f0; }
+button.gradeSelecionado:hover { background: var(--color-primary-dark); }
+button.gradeVazio:hover { background: var(--border); }
 
 .gradeSelecionadoAtivo {
   width: 30px;
@@ -1279,7 +1305,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
   display: flex;
   gap: 1.25rem;
   font-size: 0.82rem;
-  color: #475569;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
@@ -1289,7 +1315,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
   display: inline-block;
   width: 14px;
   height: 14px;
-  background: #2a5298;
+  background: var(--color-primary);
   border-radius: 3px;
   margin-right: 4px;
   vertical-align: middle;
@@ -1307,12 +1333,12 @@ button.gradeBloqueado:hover { background: #fecaca; }
 }
 
 .slotSelecionadoInfo {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  background: var(--bg-blue-light);
+  border: 1px solid var(--border-blue);
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   font-size: 0.9rem;
-  color: #1e40af;
+  color: var(--color-blue-vivid);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1323,7 +1349,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
   background: none;
   border: none;
   cursor: pointer;
-  color: #64748b;
+  color: var(--text-faint);
   font-size: 0.9rem;
   margin-left: auto;
 }
@@ -1343,7 +1369,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 .btnWhatsApp:hover { background: #1ebe57; }
 
 .btnEmailContato {
-  background: #2a5298;
+  background: var(--color-primary);
   color: white;
   border: none;
   padding: 0.65rem 1.5rem;
@@ -1354,11 +1380,11 @@ button.gradeBloqueado:hover { background: #fecaca; }
   transition: background 0.2s;
 }
 
-.btnEmailContato:hover { background: #1e3c72; }
+.btnEmailContato:hover { background: var(--color-primary-dark); }
 
 .instrucaoSlot {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-faint);
   margin-top: 0.5rem;
   font-style: italic;
 }
@@ -1367,7 +1393,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 .detalheHero {
   display: flex;
   gap: 2rem;
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -1390,7 +1416,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
   border-radius: 50%;
   object-fit: cover;
   object-position: top center;
-  border: 4px solid #e2e8f0;
+  border: 4px solid var(--border);
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   display: block;
 }
@@ -1411,12 +1437,12 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 .detalheNome {
   font-size: 1.6rem;
-  color: #1e293b;
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
 
 .detalheCrp {
-  color: #64748b;
+  color: var(--text-faint);
   font-size: 0.9rem;
   margin-bottom: 0.75rem;
 }
@@ -1426,28 +1452,28 @@ button.gradeBloqueado:hover { background: #fecaca; }
   flex-wrap: wrap;
   gap: 0.75rem;
   font-size: 0.9rem;
-  color: #334155;
+  color: var(--text-muted);
   margin-bottom: 0.75rem;
 }
 
 .detalheFormacao {
-  color: #475569;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-style: italic;
 }
 
 .detalheContato {
-  background: #f8fafc;
+  background: var(--bg-subtle);
   border-radius: 10px;
   padding: 0.75rem 1rem;
   margin-top: 1rem;
   font-size: 0.9rem;
-  color: #1e293b;
+  color: var(--text-primary);
   line-height: 1.8;
 }
 
 .detalheSecao {
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -1456,10 +1482,10 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 .detalheSecao h2 {
   font-size: 1.1rem;
-  color: #1e293b;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--border);
 }
 
 /* Admin */
@@ -1469,12 +1495,12 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 .adminHeader h1 {
   font-size: 1.75rem;
-  color: #1e293b;
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
 
 .adminHeader p {
-  color: #64748b;
+  color: var(--text-faint);
 }
 
 .adminStats {
@@ -1485,7 +1511,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 }
 
 .statCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 1.25rem 2rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
@@ -1506,12 +1532,12 @@ button.gradeBloqueado:hover { background: #fecaca; }
 .statNumber {
   font-size: 2rem;
   font-weight: bold;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .statLabel {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-faint);
   margin-top: 0.25rem;
 }
 
@@ -1519,7 +1545,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--border);
   padding-bottom: 0;
 }
 
@@ -1529,15 +1555,15 @@ button.gradeBloqueado:hover { background: #fecaca; }
   padding: 0.6rem 1.25rem;
   cursor: pointer;
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--text-faint);
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
   font-weight: 500;
 }
 
 .adminTabAtivo {
-  color: #2a5298;
-  border-bottom-color: #2a5298;
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
 }
 
 .adminLista {
@@ -1547,7 +1573,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 }
 
 .adminCard {
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 1.25rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
@@ -1572,21 +1598,21 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 .adminCardNome strong {
   font-size: 1.05rem;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .adminCardDetalhes {
   display: flex;
   gap: 1rem;
   font-size: 0.82rem;
-  color: #475569;
+  color: var(--text-secondary);
   flex-wrap: wrap;
   margin-bottom: 0.5rem;
 }
 
 .adminCardDesc {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-faint);
   margin: 0.5rem 0;
   line-height: 1.5;
   overflow: hidden;
@@ -1680,7 +1706,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 }
 
 .modalBox {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 2rem;
   max-width: 400px;
@@ -1690,11 +1716,11 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 .modalBox h3 {
   margin-bottom: 0.75rem;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .modalBox p {
-  color: #475569;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   margin-bottom: 1.5rem;
 }
@@ -1737,7 +1763,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 .cardAvaliacaoTotal {
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--text-faint2);
   margin-left: 4px;
 }
 
@@ -1753,19 +1779,19 @@ button.gradeBloqueado:hover { background: #fecaca; }
 .avaliacaoNumero {
   font-size: 2rem;
   font-weight: 800;
-  color: #1e293b;
+  color: var(--text-primary);
   line-height: 1;
 }
 
 .avaliacaoTotal {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-faint);
 }
 
 /* Perfil — input de avaliação */
 .avaliarBox {
-  background: #fafafa;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0.875rem 1rem;
   margin-bottom: 0.75rem;
@@ -1773,7 +1799,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 .avaliarLabel {
   font-size: 0.85rem;
-  color: #475569;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
@@ -1815,13 +1841,13 @@ button.gradeBloqueado:hover { background: #fecaca; }
 
 .avaliacaoLogin {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-faint);
   margin-bottom: 0.75rem;
 }
 
 .cfpNotice {
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--text-faint2);
   font-style: italic;
   margin-top: 0.25rem;
 }
@@ -1830,7 +1856,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 .btnVoltar {
   background: none;
   border: none;
-  color: #2a5298;
+  color: var(--color-primary);
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0;
@@ -1845,15 +1871,15 @@ button.gradeBloqueado:hover { background: #fecaca; }
 .adminAcoesValidacao {
   margin-top: 1rem;
   padding: 0.75rem 1rem;
-  background: #f8fafc;
+  background: var(--bg-subtle);
   border-radius: 10px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
 }
 
 .adminAcoesLabel {
   font-size: 0.78rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 0.5rem;
@@ -1880,7 +1906,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
 .btnWhatsAppAdmin:hover { background: #1ebe57; }
 
 .btnEmailAdmin {
-  background: #2a5298;
+  background: var(--color-primary);
   color: white;
   border: none;
   padding: 0.5rem 1.1rem;
@@ -1891,7 +1917,7 @@ button.gradeBloqueado:hover { background: #fecaca; }
   transition: background 0.2s;
 }
 
-.btnEmailAdmin:hover { background: #1e3c72; }
+.btnEmailAdmin:hover { background: var(--color-primary-dark); }
 
 /* Admin — botões de aprovação na página de detalhe */
 .adminAcoesAprovacao {
@@ -1913,8 +1939,8 @@ button.gradeBloqueado:hover { background: #fecaca; }
 .spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid #e2e8f0;
-  border-top-color: #2a5298;
+  border: 4px solid var(--border);
+  border-top-color: var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

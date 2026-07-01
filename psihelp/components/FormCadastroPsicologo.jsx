@@ -359,12 +359,12 @@ export default function FormCadastroPsicologo({ user }) {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label>Cidade *</label>
-            <input type="text" name="cidade" value={form.cidade} onChange={handleChange} placeholder="São Paulo" />
+            <input type="text" name="cidade" value={form.cidade} onChange={handleChange} placeholder="Joinville" />
             {errors.cidade && <span className={styles.error}>{errors.cidade}</span>}
           </div>
           <div className={styles.formGroup}>
             <label>Estado (UF) *</label>
-            <input type="text" name="estado" value={form.estado} onChange={handleChange} placeholder="SP" maxLength={2} />
+            <input type="text" name="estado" value={form.estado} onChange={handleChange} placeholder="SC" maxLength={2} />
             {errors.estado && <span className={styles.error}>{errors.estado}</span>}
           </div>
         </div>

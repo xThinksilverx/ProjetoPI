@@ -14,7 +14,11 @@
       "Bash(sort -t'.' -k2)",
       "Bash(uniq -d -f1)",
       "Bash(node *)",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\otavi\\\\Documents\\\\projetopi-main\\\\projetopi-main\" -Depth 2 | Where-Object { $_.Name -notmatch \"node_modules\" } | Select-Object FullName, PSIsContainer)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\otavi\\\\Documents\\\\projetopi-main\\\\projetopi-main\\\\psihelp\\\\app\" -Recurse | Where-Object { $_.Name -notmatch \"node_modules\" -and -not $_.PSIsContainer } | Select-Object FullName)",
+      "Bash(npx next *)",
+      "Bash(npx tsc *)"
     ]
   }
 }

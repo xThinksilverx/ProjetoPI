@@ -2,12 +2,15 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import styles from '@/styles/components.module.css';
 
 export default function Header() {
   const { user, logout } = useAuth();
+  const { dark, toggleTheme } = useTheme();
 
   return (
+    <>
     <header className={styles.header}>
       <div className="container">
         <div className={styles.headerContent}>
@@ -23,6 +26,13 @@ export default function Header() {
             {user?.tipo === 'admin' && (
               <Link href="/admin" className={styles.navLink}>Painel Admin</Link>
             )}
+            <button
+              onClick={toggleTheme}
+              className={styles.themeToggle}
+              aria-label={dark ? 'Ativar modo claro' : 'Ativar modo escuro'}
+            >
+              {dark ? 'Claro' : 'Escuro'}
+            </button>
             {user ? (
               <div className={styles.userMenu}>
                 <span className={styles.userName}>👤 {user.nome.split(' ')[0]}</span>
@@ -38,5 +48,7 @@ export default function Header() {
         </div>
       </div>
     </header>
+    <div id="main-content" tabIndex={-1} style={{ outline: 'none' }} />
+    </>
   );
 }
